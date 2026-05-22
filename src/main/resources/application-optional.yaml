@@ -1,0 +1,45 @@
+# =============================================================================
+# 可选默认配置（由 application.yaml 以 optional 方式 import，文件缺失不影响启动）
+# 创建知识库时未传的字段会与下列 ragchunk 默认值合并（KnowledgeBaseConfigMerger）
+# =============================================================================
+
+# Swagger / OpenAPI（SpringDoc 3）
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+ragchunk:
+  chunking:
+    mode: hybrid
+    ai-mode: auto
+  rule:
+    max-chars: 1200
+    min-chars: 80
+    overlap: 80
+    plain-separators:
+      - "\n\n"
+      - "\n"
+    markdown-separators:
+      - "\n## "
+      - "\n\n"
+      - "\n"
+    sentence-boundary-fallback: true
+  quality:
+    score-threshold: 70
+  ai:
+    chunk-model: qwen-plus
+    max-calls-per-doc: 1
+    max-input-tokens: 8000
+    retry-on-parse-error: 1
+  embedding:
+    model: text-embedding-v3
+    dimensions: 1024
+    remote-enabled: true
+  retrieval:
+    top-k: 3
+    score-threshold: 0.5
+  chat:
+    model: qwen-plus

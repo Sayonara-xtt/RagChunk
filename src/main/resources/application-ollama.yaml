@@ -1,0 +1,18 @@
+# 本地 Ollama（OpenAI 兼容 /v1）
+# 启动: .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=local,ollama
+# 或: set SPRING_PROFILES_ACTIVE=local,ollama
+
+ragchunk:
+  dashscope:
+    provider: ollama
+    api-key: ollama
+    base-url: ${OLLAMA_BASE_URL:http://192.168.14.57:11434/v1}
+  ai:
+    chunk-model: ${OLLAMA_CHAT_MODEL:qwen2.5:14b}
+  chat:
+    model: ${OLLAMA_CHAT_MODEL:qwen2.5:14b}
+  # 未在 Ollama 部署 embed 模型时保持 false，向量走本地 hash（可跑通；语义检索较弱）
+  embedding:
+    remote-enabled: ${OLLAMA_EMBED_REMOTE:false}
+    model: ${OLLAMA_EMBED_MODEL:nomic-embed-text}
+    dimensions: 1024

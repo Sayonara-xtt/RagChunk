@@ -1,0 +1,14 @@
+{
+  "id": "doc_f3a8b2c91e04",
+  "kbId": "kb_93154bcde024",
+  "fileName": "sample.md",
+  "status": "SUCCESS",
+  "chunkCount": 3,
+  "profile": "markdown",
+  "qualityScore": 92,
+  "aiTriggered": false,
+  "aiTriggerId": null,
+  "aiFallback": false,
+  "errorMessage": null,
+  "createdAt": "2026-05-20T08:12:05.441221Z"
+}

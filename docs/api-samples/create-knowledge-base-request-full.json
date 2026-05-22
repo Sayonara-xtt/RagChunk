@@ -1,0 +1,32 @@
+{
+  "name": "kb-test-20260520-153630",
+  "description": "API test",
+  "chunking": {
+    "mode": "hybrid",
+    "aiMode": "never"
+  },
+  "rule": {
+    "maxChars": 1200,
+    "minChars": 80,
+    "overlap": 80,
+    "plainSeparators": ["\n\n", "\n"],
+    "markdownSeparators": ["\n## ", "\n\n", "\n"],
+    "sentenceBoundaryFallback": true
+  },
+  "quality": {
+    "scoreThreshold": 70
+  },
+  "ai": {
+    "chunkModel": "qwen-plus",
+    "maxCallsPerDoc": 1,
+    "maxInputTokens": 8000,
+    "retryOnParseError": 1
+  },
+  "embedding": {
+    "model": "text-embedding-v3"
+  },
+  "retrieval": {
+    "topK": 3,
+    "scoreThreshold": 0.3
+  }
+}

@@ -1,0 +1,29 @@
+# 本机 PostgreSQL 17 + pgvector（默认 profile）
+# 首次: 以管理员运行 scripts\install-pgvector-windows.cmd
+# 本地启动: scripts\dev-run.cmd  或  .\mvnw.cmd spring-boot:run
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${RAGCHUNK_DB_HOST:localhost}:${RAGCHUNK_DB_PORT:5432}/${RAGCHUNK_DB_NAME:ragchunk}
+    username: ${RAGCHUNK_DB_USER:postgres}
+    password: ${RAGCHUNK_DB_PASSWORD:123}
+  flyway:
+    locations: classpath:db/migration
+    # 若启动报 V2 checksum mismatch：local 下 FlywayLocalConfig 会自动 repair；或运行 scripts\repair-flyway.ps1
+
+ragchunk:
+  storage:
+    mode: postgres
+    vector-store: pgvector
+  # 本机开发默认走 Ollama（仅激活 local 时也生效，不依赖 ollama profile）
+  dashscope:
+    provider: ollama
+    api-key: ollama
+    base-url: ${OLLAMA_BASE_URL:http://192.168.14.57:11434/v1}
+  ai:
+    chunk-model: ${OLLAMA_CHAT_MODEL:qwen2.5:14b}
+  chat:
+    model: ${OLLAMA_CHAT_MODEL:qwen2.5:14b}
+  embedding:
+    remote-enabled: ${OLLAMA_EMBED_REMOTE:false}
+    model: ${OLLAMA_EMBED_MODEL:nomic-embed-text}

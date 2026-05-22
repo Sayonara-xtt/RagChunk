@@ -53,10 +53,15 @@
             <artifactId>pgvector</artifactId>
             <version>0.1.6</version>
         </dependency>
-        <!-- SpringDoc 3（Spring Boot 4 必需）；Knife4j 4.5 starter 与 SpringDoc 3 不兼容，见 docs/archive/testing.md -->
+        <!-- SpringDoc 3（Spring Boot 4）；Scalar + Swagger UI 可并存，见 docs/开发进度.md §11.3 -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-scalar</artifactId>
             <version>3.0.3</version>
         </dependency>
         <dependency>

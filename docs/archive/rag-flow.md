@@ -1,4 +1,4 @@
-﻿> **已归档**。主文档见 [README.md](../../README.md)。
+﻿> **已归档**。请以 [开发进度.md](../开发进度.md) 与 [docs/README.md](../README.md) 为准。
 
 # 标准 RAG 流程
 

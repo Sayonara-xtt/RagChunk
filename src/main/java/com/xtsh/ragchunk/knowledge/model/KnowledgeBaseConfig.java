@@ -1,10 +1,12 @@
 package com.xtsh.ragchunk.knowledge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 @Schema(description = "知识库运行配置快照（创建时合并 application.yaml 默认值后持久化到 knowledge_base.config_json）")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record KnowledgeBaseConfig(
         @Schema(description = "切片策略：模式与是否启用千问重切", requiredMode = Schema.RequiredMode.REQUIRED)
         ChunkingConfig chunking,
@@ -17,7 +19,9 @@ public record KnowledgeBaseConfig(
         @Schema(description = "文档切片向量化使用的 Embedding 模型", requiredMode = Schema.RequiredMode.REQUIRED)
         EmbeddingConfig embedding,
         @Schema(description = "问答检索：返回条数与相似度过滤阈值", requiredMode = Schema.RequiredMode.REQUIRED)
-        RetrievalConfig retrieval
+        RetrievalConfig retrieval,
+        @Schema(description = "智能问答编排：方案 1/2/3/5 与 LLM、检索次数上限")
+        QaConfig qa
 ) {
     @Schema(description = "切片策略")
     public record ChunkingConfig(

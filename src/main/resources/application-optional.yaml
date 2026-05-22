@@ -3,13 +3,16 @@
 # 创建知识库时未传的字段会与下列 ragchunk 默认值合并（KnowledgeBaseConfigMerger）
 # =============================================================================
 
-# Swagger / OpenAPI（SpringDoc 3）
+# OpenAPI 文档（SpringDoc 3）：Scalar 为主入口，Swagger UI 保留
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+  scalar:
+    enabled: true
+    path: /scalar
 
 ragchunk:
   chunking:
@@ -43,3 +46,25 @@ ragchunk:
     score-threshold: 0.5
   chat:
     model: qwen-plus
+  upload:
+    async-enabled: true
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 500
+  oss:
+    provider: local
+    endpoint: http://127.0.0.1:9000
+    bucket: ragchunk
+    access-key: minioadmin
+    secret-key: minioadmin
+    local-root: ./data/oss-archive
+    public-base-url: http://127.0.0.1:9000/ragchunk
+  qa:
+    scheme: 1
+    rewrite-min-score: 0.35
+    max-rewrite-queries: 2
+    max-llm-calls: 2
+    max-search-rounds: 2
+    agent-max-iterations: 3
+    agent-max-tool-calls-per-round: 1
+    agent-allow-relax-threshold: true

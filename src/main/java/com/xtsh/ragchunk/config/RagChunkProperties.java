@@ -17,6 +17,9 @@ public class RagChunkProperties {
     private Embedding embedding = new Embedding();
     private Retrieval retrieval = new Retrieval();
     private Chat chat = new Chat();
+    private Qa qa = new Qa();
+    private Upload upload = new Upload();
+    private Oss oss = new Oss();
 
     public int getPhase() { return phase; }
     public void setPhase(int phase) { this.phase = phase; }
@@ -38,6 +41,12 @@ public class RagChunkProperties {
     public void setRetrieval(Retrieval retrieval) { this.retrieval = retrieval; }
     public Chat getChat() { return chat; }
     public void setChat(Chat chat) { this.chat = chat; }
+    public Qa getQa() { return qa; }
+    public void setQa(Qa qa) { this.qa = qa; }
+    public Upload getUpload() { return upload; }
+    public void setUpload(Upload upload) { this.upload = upload; }
+    public Oss getOss() { return oss; }
+    public void setOss(Oss oss) { this.oss = oss; }
 
     public static class Storage {
         /** postgres：PostgreSQL 持久化；inmemory：内存，重启丢失 */
@@ -154,5 +163,90 @@ public class RagChunkProperties {
         private String model = "qwen-plus";
         public String getModel() { return model; }
         public void setModel(String model) { this.model = model; }
+    }
+
+    /** 智能问答默认方案（创建知识库未传 qa 时合并） */
+    public static class Qa {
+        private int scheme = 1;
+        private double rewriteMinScore = 0.35;
+        private int maxRewriteQueries = 2;
+        private int maxLlmCalls = 2;
+        private int maxSearchRounds = 2;
+        private int agentMaxIterations = 3;
+        private int agentMaxToolCallsPerRound = 1;
+        private boolean agentAllowRelaxThreshold = true;
+
+        public int getScheme() { return scheme; }
+        public void setScheme(int scheme) { this.scheme = scheme; }
+        public double getRewriteMinScore() { return rewriteMinScore; }
+        public void setRewriteMinScore(double rewriteMinScore) { this.rewriteMinScore = rewriteMinScore; }
+        public int getMaxRewriteQueries() { return maxRewriteQueries; }
+        public void setMaxRewriteQueries(int maxRewriteQueries) { this.maxRewriteQueries = maxRewriteQueries; }
+        public int getMaxLlmCalls() { return maxLlmCalls; }
+        public void setMaxLlmCalls(int maxLlmCalls) { this.maxLlmCalls = maxLlmCalls; }
+        public int getMaxSearchRounds() { return maxSearchRounds; }
+        public void setMaxSearchRounds(int maxSearchRounds) { this.maxSearchRounds = maxSearchRounds; }
+        public int getAgentMaxIterations() { return agentMaxIterations; }
+        public void setAgentMaxIterations(int agentMaxIterations) { this.agentMaxIterations = agentMaxIterations; }
+        public int getAgentMaxToolCallsPerRound() { return agentMaxToolCallsPerRound; }
+        public void setAgentMaxToolCallsPerRound(int agentMaxToolCallsPerRound) {
+            this.agentMaxToolCallsPerRound = agentMaxToolCallsPerRound;
+        }
+        public boolean isAgentAllowRelaxThreshold() { return agentAllowRelaxThreshold; }
+        public void setAgentAllowRelaxThreshold(boolean agentAllowRelaxThreshold) {
+            this.agentAllowRelaxThreshold = agentAllowRelaxThreshold;
+        }
+    }
+
+    /** 异步上传线程池 */
+    public static class Upload {
+        private boolean asyncEnabled = true;
+        private int corePoolSize = 4;
+        private int maxPoolSize = 8;
+        private int queueCapacity = 500;
+
+        public boolean isAsyncEnabled() { return asyncEnabled; }
+        public void setAsyncEnabled(boolean asyncEnabled) { this.asyncEnabled = asyncEnabled; }
+        public int getCorePoolSize() { return corePoolSize; }
+        public void setCorePoolSize(int corePoolSize) { this.corePoolSize = corePoolSize; }
+        public int getMaxPoolSize() { return maxPoolSize; }
+        public void setMaxPoolSize(int maxPoolSize) { this.maxPoolSize = maxPoolSize; }
+        public int getQueueCapacity() { return queueCapacity; }
+        public void setQueueCapacity(int queueCapacity) { this.queueCapacity = queueCapacity; }
+    }
+
+    /**
+     * 文档原件 OSS 归档（默认本地目录模拟；endpoint 为展示用默认 MinIO 地址）。
+     */
+    public static class Oss {
+        /** local：本地目录；s3：S3 兼容（MinIO） */
+        private String provider = "local";
+        private String endpoint = "http://127.0.0.1:9000";
+        private String bucket = "ragchunk";
+        private String accessKey = "minioadmin";
+        private String secretKey = "minioadmin";
+        private String region = "us-east-1";
+        /** 本地归档根目录（provider=local） */
+        private String localRoot = "./data/oss-archive";
+        /** 对外展示 URL 前缀，如 http://127.0.0.1:9000/ragchunk */
+        private String publicBaseUrl = "http://127.0.0.1:9000/ragchunk";
+
+        public String getProvider() { return provider; }
+        public void setProvider(String provider) { this.provider = provider; }
+        public String getEndpoint() { return endpoint; }
+        public void setEndpoint(String endpoint) { this.endpoint = endpoint; }
+        public String getBucket() { return bucket; }
+        public void setBucket(String bucket) { this.bucket = bucket; }
+        public String getAccessKey() { return accessKey; }
+        public void setAccessKey(String accessKey) { this.accessKey = accessKey; }
+        public String getSecretKey() { return secretKey; }
+        public void setSecretKey(String secretKey) { this.secretKey = secretKey; }
+        public String getRegion() { return region; }
+        public void setRegion(String region) { this.region = region; }
+        public String getLocalRoot() { return localRoot; }
+        public void setLocalRoot(String localRoot) { this.localRoot = localRoot; }
+        public String getPublicBaseUrl() { return publicBaseUrl; }
+        public void setPublicBaseUrl(String publicBaseUrl) { this.publicBaseUrl = publicBaseUrl; }
+        public boolean isLocal() { return provider == null || "local".equalsIgnoreCase(provider); }
     }
 }

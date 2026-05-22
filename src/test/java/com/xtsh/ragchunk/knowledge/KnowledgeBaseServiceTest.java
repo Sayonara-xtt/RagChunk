@@ -17,7 +17,8 @@ class KnowledgeBaseServiceTest {
                 new RagChunkProperties(),
                 new KnowledgeBaseConfigMerger(),
                 new KnowledgeBaseRequestValidator(),
-                new InMemoryKnowledgeBaseStore()
+                new InMemoryKnowledgeBaseStore(),
+                new KnowledgeBaseConfigNormalizer(new RagChunkProperties())
         );
     }
 

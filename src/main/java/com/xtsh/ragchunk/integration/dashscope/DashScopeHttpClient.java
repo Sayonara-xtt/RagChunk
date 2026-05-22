@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,19 @@ public class DashScopeHttpClient {
         return postChat(model, systemPrompt, userContent, true);
     }
 
+    /**
+     * Agent 问答：支持 tools / tool_calls（OpenAI 兼容）。
+     */
+    public ChatCompletionResult chatWithTools(String model, List<Map<String, Object>> messages,
+                                              List<Map<String, Object>> tools) throws Exception {
+        var body = new LinkedHashMap<String, Object>();
+        body.put("model", model);
+        body.put("messages", messages);
+        body.put("tools", tools);
+        body.put("temperature", 0);
+        return postChatBody(body);
+    }
+
     private String postChat(String model, String systemPrompt, String userContent, boolean jsonMode) throws Exception {
         var messages = List.of(
                 Map.of("role", "system", "content", systemPrompt),
@@ -65,6 +79,12 @@ public class DashScopeHttpClient {
                 body.put("response_format", Map.of("type", "json_object"));
             }
         }
+        ChatCompletionResult result = postChatBody(body);
+        String content = result.content();
+        return content != null ? content : "";
+    }
+
+    private ChatCompletionResult postChatBody(LinkedHashMap<String, Object> body) throws Exception {
         var bodyJson = mapper.writeValueAsString(body);
         var ds = properties.getDashscope();
         var req = HttpRequest.newBuilder()
@@ -85,8 +105,26 @@ public class DashScopeHttpClient {
         if (resp.statusCode() >= 400) {
             throw new IllegalStateException(providerLabel() + " chat error: " + resp.statusCode() + " " + resp.body());
         }
-        JsonNode root = mapper.readTree(resp.body());
-        return root.path("choices").path(0).path("message").path("content").asText();
+        return parseCompletion(mapper.readTree(resp.body()));
+    }
+
+    private ChatCompletionResult parseCompletion(JsonNode root) {
+        JsonNode message = root.path("choices").path(0).path("message");
+        String content = message.path("content").isMissingNode() || message.path("content").isNull()
+                ? null
+                : message.path("content").asText();
+        JsonNode toolCallsNode = message.path("tool_calls");
+        List<ChatCompletionResult.ToolCall> toolCalls = new ArrayList<>();
+        if (toolCallsNode.isArray()) {
+            for (JsonNode tc : toolCallsNode) {
+                JsonNode fn = tc.path("function");
+                toolCalls.add(new ChatCompletionResult.ToolCall(
+                        tc.path("id").asText(""),
+                        fn.path("name").asText(""),
+                        fn.path("arguments").asText("{}")));
+            }
+        }
+        return new ChatCompletionResult(content, toolCalls);
     }
 
     public float[] embed(String model, String text, int dimensions) throws Exception {

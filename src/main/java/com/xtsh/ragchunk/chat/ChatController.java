@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "问答", description = "RAG：向量检索 TopK → 千问生成（无 API Key 时返回检索原文）")
+@Tag(name = "问答", description = "智能问答：方案 1 纯应用 / 2 协作渐进 / 3 协作全量 / 5 Agent（可配置 qa.scheme）")
 @RestController
 @RequestMapping("/api/v1/knowledge-bases/{kbId}/chat")
 public class ChatController {
@@ -23,7 +23,7 @@ public class ChatController {
         this.ragChatService = ragChatService;
     }
 
-    @Operation(summary = "知识库问答", description = "使用知识库 retrieval 配置做向量检索，再调用 chat 模型生成回答")
+    @Operation(summary = "知识库问答", description = "按知识库 qa.scheme（或请求体 qaScheme）编排检索与 LLM；响应 meta 含 llmCalls、searchRounds")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "问答成功",
                     content = @Content(schema = @Schema(implementation = ChatResponse.class))),
@@ -36,6 +36,6 @@ public class ChatController {
             @RequestBody(description = "问答请求体", required = true,
                     content = @Content(schema = @Schema(implementation = ChatRequest.class)))
             @org.springframework.web.bind.annotation.RequestBody ChatRequest request) throws Exception {
-        return ragChatService.chat(kbId, request.getQuestion());
+        return ragChatService.chat(kbId, request.getQuestion(), request.getQaScheme());
     }
 }

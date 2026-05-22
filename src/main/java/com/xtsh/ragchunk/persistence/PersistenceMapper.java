@@ -69,6 +69,16 @@ public class PersistenceMapper {
         doc.setAiFallback(entity.isAiFallback());
         doc.setErrorMessage(entity.getErrorMessage());
         doc.setCreatedAt(entity.getCreatedAt());
+        doc.setUpdatedAt(entity.getUpdatedAt());
+        doc.setBatchId(entity.getBatchId());
+        doc.setProcessStage(entity.getProcessStage());
+        doc.setProgressPercent(entity.getProgressPercent());
+        doc.setFileSize(entity.getFileSize());
+        doc.setStorageKey(entity.getStorageKey());
+        doc.setStorageUrl(entity.getStorageUrl());
+        doc.setContentHash(entity.getContentHash());
+        doc.setSourceType(entity.getSourceType());
+        doc.setRetrainVersion(entity.getRetrainVersion());
         return doc;
     }
 
@@ -89,6 +99,15 @@ public class PersistenceMapper {
         entity.setAiTriggerId(doc.getAiTriggerId());
         entity.setAiFallback(doc.isAiFallback());
         entity.setErrorMessage(doc.getErrorMessage());
+        entity.setBatchId(doc.getBatchId());
+        entity.setProcessStage(doc.getProcessStage());
+        entity.setProgressPercent(doc.getProgressPercent());
+        entity.setFileSize(doc.getFileSize());
+        entity.setStorageKey(doc.getStorageKey());
+        entity.setStorageUrl(doc.getStorageUrl());
+        entity.setContentHash(doc.getContentHash());
+        entity.setSourceType(doc.getSourceType());
+        entity.setRetrainVersion(doc.getRetrainVersion());
         entity.setUpdatedAt(now);
         return entity;
     }

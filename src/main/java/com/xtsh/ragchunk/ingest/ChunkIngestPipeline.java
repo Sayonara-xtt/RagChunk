@@ -1,9 +1,12 @@
 package com.xtsh.ragchunk.ingest;
 
 import com.xtsh.ragchunk.chunk.model.TextChunk;
+import com.xtsh.ragchunk.document.DocumentProcessTracker;
+import com.xtsh.ragchunk.document.model.DocumentProcessStage;
 import com.xtsh.ragchunk.document.model.DocumentRecord;
 import com.xtsh.ragchunk.embedding.EmbeddingService;
 import com.xtsh.ragchunk.knowledge.model.KnowledgeBase;
+import com.xtsh.ragchunk.storage.ObjectStorageService;
 import com.xtsh.ragchunk.vector.VectorRecord;
 import com.xtsh.ragchunk.vector.VectorStore;
 import org.slf4j.Logger;
@@ -24,26 +27,58 @@ public class ChunkIngestPipeline {
     private final HybridChunkingService hybridChunkingService;
     private final EmbeddingService embeddingService;
     private final VectorStore vectorStore;
+    private final DocumentProcessTracker processTracker;
+    private final ObjectStorageService objectStorage;
 
     public ChunkIngestPipeline(DocumentParser documentParser, TextNormalizer textNormalizer,
                                HybridChunkingService hybridChunkingService, EmbeddingService embeddingService,
-                               VectorStore vectorStore) {
+                               VectorStore vectorStore, DocumentProcessTracker processTracker,
+                               ObjectStorageService objectStorage) {
         this.documentParser = documentParser;
         this.textNormalizer = textNormalizer;
         this.hybridChunkingService = hybridChunkingService;
         this.embeddingService = embeddingService;
         this.vectorStore = vectorStore;
+        this.processTracker = processTracker;
+        this.objectStorage = objectStorage;
     }
 
     /**
-     * 执行入库；异常向上抛出，由 DocumentService 标记 FAILED 并删除已写入向量。
+     * 执行入库；异常向上抛出，由调用方标记 FAILED 并删除已写入向量。
      */
     public void ingest(DocumentRecord doc, KnowledgeBase kb, MultipartFile file, boolean smartChunk) throws Exception {
-        String docId = doc.getId();
-        log.info("[文档上传] docId={} 流水线开始 文件={}, smartChunk={}", docId, file.getOriginalFilename(), smartChunk);
+        try (var in = file.getInputStream()) {
+            runPipeline(doc, kb, () -> documentParser.parseStream(in, file.getOriginalFilename()),
+                    file.getOriginalFilename(), smartChunk);
+        }
+    }
 
+    /**
+     * 从已归档原件流式解析并入库（不将整个文件载入堆）。
+     */
+    public void ingestFromStorage(DocumentRecord doc, KnowledgeBase kb, String storageKey, String fileName,
+                                  boolean smartChunk) throws Exception {
+        try (var in = objectStorage.openStream(storageKey)) {
+            runPipeline(doc, kb, () -> documentParser.parseStream(in, fileName), fileName, smartChunk);
+        }
+    }
+
+    /**
+     * 从字节执行全流程（测试用）。
+     */
+    public void ingestBytes(DocumentRecord doc, KnowledgeBase kb, byte[] fileBytes, String fileName, boolean smartChunk)
+            throws Exception {
+        runPipeline(doc, kb, () -> documentParser.parseBytes(fileBytes, fileName), fileName, smartChunk);
+    }
+
+    private void runPipeline(DocumentRecord doc, KnowledgeBase kb, ThrowingSupplier<String> parseRaw, String fileName,
+                             boolean smartChunk) throws Exception {
+        String docId = doc.getId();
+        log.info("[文档上传] docId={} 流水线开始 文件={}, smartChunk={}", docId, fileName, smartChunk);
+
+        processTracker.updateStage(docId, DocumentProcessStage.PARSING);
         long tParse = System.nanoTime();
-        String raw = documentParser.parse(file);
+        String raw = parseRaw.get();
         String text = textNormalizer.normalize(raw);
         if (text.isBlank()) {
             throw new IllegalArgumentException("document is empty after normalization");
@@ -51,8 +86,9 @@ public class ChunkIngestPipeline {
         log.info("[文档上传] docId={} 解析与规范化完成 原始字数={}, 正文字数={}, 耗时={}ms",
                 docId, raw.length(), text.length(), stepMs(tParse));
 
+        processTracker.updateStage(docId, DocumentProcessStage.CHUNKING);
         long tChunk = System.nanoTime();
-        var result = hybridChunkingService.chunk(docId, text, file.getOriginalFilename(), kb.getConfig(), smartChunk);
+        var result = hybridChunkingService.chunk(docId, text, fileName, kb.getConfig(), smartChunk);
         doc.setProfile(result.profile());
         doc.setQualityScore(result.qualityReport().qualityScore());
         doc.setAiTriggered(result.aiTriggered());
@@ -64,6 +100,7 @@ public class ChunkIngestPipeline {
                 docId, result.profile(), result.qualityReport().qualityScore(), result.chunks().size(), hybridSources,
                 result.aiTriggered(), result.aiTriggerId(), result.aiFallback(), stepMs(tChunk));
 
+        processTracker.updateStage(docId, DocumentProcessStage.EMBEDDING);
         long tEmbed = System.nanoTime();
         int i = 0;
         for (TextChunk chunk : result.chunks()) {
@@ -76,9 +113,15 @@ public class ChunkIngestPipeline {
         doc.setChunkCount(i);
         log.info("[文档上传] docId={} 向量写入完成 切片数={}, 耗时={}ms",
                 docId, i, stepMs(tEmbed));
+        processTracker.updateStage(docId, DocumentProcessStage.SUCCESS);
     }
 
     private static long stepMs(long stepStartNano) {
         return (System.nanoTime() - stepStartNano) / 1_000_000;
+    }
+
+    @FunctionalInterface
+    private interface ThrowingSupplier<T> {
+        T get() throws Exception;
     }
 }

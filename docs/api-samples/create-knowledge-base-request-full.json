@@ -1,6 +1,6 @@
 {
-  "name": "kb-test-20260520-153630",
-  "description": "API test",
+  "name": "kb-test-20260522",
+  "description": "API test with qa config",
   "chunking": {
     "mode": "hybrid",
     "aiMode": "never"
@@ -27,6 +27,16 @@
   },
   "retrieval": {
     "topK": 3,
-    "scoreThreshold": 0.3
+    "scoreThreshold": 0.5
+  },
+  "qa": {
+    "scheme": 1,
+    "rewriteMinScore": 0.35,
+    "maxRewriteQueries": 2,
+    "maxLlmCalls": 2,
+    "maxSearchRounds": 2,
+    "agentMaxIterations": 3,
+    "agentMaxToolCallsPerRound": 1,
+    "agentAllowRelaxThreshold": true
   }
 }

@@ -18,13 +18,16 @@ public class KnowledgeBaseService {
     private final KnowledgeBaseConfigMerger merger;
     private final KnowledgeBaseRequestValidator validator;
     private final KnowledgeBaseStore store;
+    private final KnowledgeBaseConfigNormalizer configNormalizer;
 
     public KnowledgeBaseService(RagChunkProperties defaults, KnowledgeBaseConfigMerger merger,
-                                KnowledgeBaseRequestValidator validator, KnowledgeBaseStore store) {
+                                KnowledgeBaseRequestValidator validator, KnowledgeBaseStore store,
+                                KnowledgeBaseConfigNormalizer configNormalizer) {
         this.defaults = defaults;
         this.merger = merger;
         this.validator = validator;
         this.store = store;
+        this.configNormalizer = configNormalizer;
     }
 
     public KnowledgeBaseResponse create(CreateKnowledgeBaseRequest request) {
@@ -43,7 +46,9 @@ public class KnowledgeBaseService {
     }
 
     public KnowledgeBase require(String id) {
-        return store.findById(id).orElseThrow(() -> new NotFoundException("knowledge base not found: " + id));
+        var kb = store.findById(id).orElseThrow(() -> new NotFoundException("knowledge base not found: " + id));
+        kb.setConfig(configNormalizer.normalize(kb.getConfig()));
+        return kb;
     }
 
     public KnowledgeBaseResponse getById(String id) {

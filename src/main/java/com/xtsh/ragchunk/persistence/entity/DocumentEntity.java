@@ -44,6 +44,30 @@ public class DocumentEntity {
     @TableField("error_message")
     private String errorMessage;
 
+    @TableField("batch_id")
+    private String batchId;
+
+    @TableField("process_stage")
+    private String processStage;
+
+    @TableField("progress_percent")
+    private int progressPercent;
+
+    @TableField("file_size")
+    private long fileSize;
+
+    @TableField("content_hash")
+    private String contentHash;
+
+    @TableField("storage_url")
+    private String storageUrl;
+
+    @TableField("source_type")
+    private String sourceType;
+
+    @TableField("retrain_version")
+    private int retrainVersion;
+
     @TableField("created_at")
     private Instant createdAt;
 
@@ -74,6 +98,22 @@ public class DocumentEntity {
     public void setAiFallback(boolean aiFallback) { this.aiFallback = aiFallback; }
     public String getErrorMessage() { return errorMessage; }
     public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+    public String getBatchId() { return batchId; }
+    public void setBatchId(String batchId) { this.batchId = batchId; }
+    public String getProcessStage() { return processStage; }
+    public void setProcessStage(String processStage) { this.processStage = processStage; }
+    public int getProgressPercent() { return progressPercent; }
+    public void setProgressPercent(int progressPercent) { this.progressPercent = progressPercent; }
+    public long getFileSize() { return fileSize; }
+    public void setFileSize(long fileSize) { this.fileSize = fileSize; }
+    public String getContentHash() { return contentHash; }
+    public void setContentHash(String contentHash) { this.contentHash = contentHash; }
+    public String getStorageUrl() { return storageUrl; }
+    public void setStorageUrl(String storageUrl) { this.storageUrl = storageUrl; }
+    public String getSourceType() { return sourceType; }
+    public void setSourceType(String sourceType) { this.sourceType = sourceType; }
+    public int getRetrainVersion() { return retrainVersion; }
+    public void setRetrainVersion(int retrainVersion) { this.retrainVersion = retrainVersion; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }

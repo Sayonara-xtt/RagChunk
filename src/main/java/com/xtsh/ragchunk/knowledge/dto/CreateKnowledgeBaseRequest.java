@@ -31,6 +31,9 @@ public class CreateKnowledgeBaseRequest {
     @Schema(description = "检索问答参数（TopK、相似度阈值）")
     private RetrievalPayload retrieval;
 
+    @Schema(description = "智能问答方案：1=纯应用 2=协作渐进 3=协作全量 5=Agent")
+    private QaPayload qa;
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
@@ -47,6 +50,8 @@ public class CreateKnowledgeBaseRequest {
     public void setEmbedding(EmbeddingPayload embedding) { this.embedding = embedding; }
     public RetrievalPayload getRetrieval() { return retrieval; }
     public void setRetrieval(RetrievalPayload retrieval) { this.retrieval = retrieval; }
+    public QaPayload getQa() { return qa; }
+    public void setQa(QaPayload qa) { this.qa = qa; }
 
     @Schema(description = "切片模式配置")
     public static class ChunkingPayload {
@@ -150,5 +155,46 @@ public class CreateKnowledgeBaseRequest {
         public void setTopK(Integer topK) { this.topK = topK; }
         public Double getScoreThreshold() { return scoreThreshold; }
         public void setScoreThreshold(Double scoreThreshold) { this.scoreThreshold = scoreThreshold; }
+    }
+
+    @Schema(description = "智能问答编排")
+    public static class QaPayload {
+        @Schema(description = "方案：1/2/3/5", example = "2")
+        private Integer scheme;
+        @Schema(description = "协作渐进：低于该分触发改写", example = "0.35")
+        private Double rewriteMinScore;
+        @Schema(description = "改写检索短句条数上限", example = "2")
+        private Integer maxRewriteQueries;
+        @Schema(description = "单次问答 LLM 次数上限", example = "2")
+        private Integer maxLlmCalls;
+        @Schema(description = "单次问答检索轮次上限", example = "2")
+        private Integer maxSearchRounds;
+        @Schema(description = "Agent 对话轮次上限", example = "3")
+        private Integer agentMaxIterations;
+        @Schema(description = "Agent 每轮 tool 次数上限", example = "1")
+        private Integer agentMaxToolCallsPerRound;
+        @Schema(description = "Agent 是否允许放宽检索阈值")
+        private Boolean agentAllowRelaxThreshold;
+
+        public Integer getScheme() { return scheme; }
+        public void setScheme(Integer scheme) { this.scheme = scheme; }
+        public Double getRewriteMinScore() { return rewriteMinScore; }
+        public void setRewriteMinScore(Double rewriteMinScore) { this.rewriteMinScore = rewriteMinScore; }
+        public Integer getMaxRewriteQueries() { return maxRewriteQueries; }
+        public void setMaxRewriteQueries(Integer maxRewriteQueries) { this.maxRewriteQueries = maxRewriteQueries; }
+        public Integer getMaxLlmCalls() { return maxLlmCalls; }
+        public void setMaxLlmCalls(Integer maxLlmCalls) { this.maxLlmCalls = maxLlmCalls; }
+        public Integer getMaxSearchRounds() { return maxSearchRounds; }
+        public void setMaxSearchRounds(Integer maxSearchRounds) { this.maxSearchRounds = maxSearchRounds; }
+        public Integer getAgentMaxIterations() { return agentMaxIterations; }
+        public void setAgentMaxIterations(Integer agentMaxIterations) { this.agentMaxIterations = agentMaxIterations; }
+        public Integer getAgentMaxToolCallsPerRound() { return agentMaxToolCallsPerRound; }
+        public void setAgentMaxToolCallsPerRound(Integer agentMaxToolCallsPerRound) {
+            this.agentMaxToolCallsPerRound = agentMaxToolCallsPerRound;
+        }
+        public Boolean getAgentAllowRelaxThreshold() { return agentAllowRelaxThreshold; }
+        public void setAgentAllowRelaxThreshold(Boolean agentAllowRelaxThreshold) {
+            this.agentAllowRelaxThreshold = agentAllowRelaxThreshold;
+        }
     }
 }

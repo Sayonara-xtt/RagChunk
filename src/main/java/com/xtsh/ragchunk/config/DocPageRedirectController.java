@@ -4,13 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Knife4j 4.5 与 SpringDoc 3 不兼容时，将 /doc.html 重定向到可用的 Swagger UI。
+ * 兼容旧书签：/doc.html 重定向到 Scalar API 文档（Swagger UI 仍可通过 /swagger-ui/index.html 访问）。
  */
 @Controller
 public class DocPageRedirectController {
 
     @GetMapping("/doc.html")
     public String docHtml() {
-        return "redirect:/swagger-ui/index.html";
+        return "redirect:/scalar";
     }
 }

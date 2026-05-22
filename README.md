@@ -2,22 +2,26 @@
 
 基于 **Spring Boot 4** 的 RAG 知识库服务：创建库 → 上传文档 → **混合切片**（规则 + 千问/Ollama 按需）→ 向量入库 → 检索问答。
 
-> **⚠️ 一期说明**：功能 **开发基本完成**，**尚未进行全面测试**，解析/切片/AI/问答的 **正确性难以保证**，当前仅供开发联调，不宜作为生产就绪版本。详见 [docs/一期开发进度.md](docs/一期开发进度.md)。
+> **⚠️ 状态说明**：核心功能 **已实现** 且 **接口曾联调通过**；解析/切片/AI/问答的 **业务正确性尚未验收**，仅供开发联调。详见 [docs/开发进度.md](docs/开发进度.md)。
 
 | 项 | 说明 |
 |----|------|
 | 技术栈 | Java 17、Spring Boot 4.0.6、MyBatis Plus、PostgreSQL + pgvector、Flyway |
-| 一期能力 | 离线建库 5 步、混合切片 T0/T1/T2/T4/T8、`SEMANTIC_RESPLIT`、pgvector 检索 |
+| 已实现能力 | 离线建库、混合切片 T0/T1/T2/T4/T8、pgvector 检索、**智能问答四种编排** |
 | **交付状态** | **开发完成 · 测试不充分 · 正确性未保证** |
-| 支持格式 | `txt` / `md` / `docx` / `xlsx` / `xls`（PDF 二期） |
-| **开发进度** | [docs/一期开发进度.md](docs/一期开发进度.md)（**对外简版**）；[详细版](docs/一期开发进度-详细版.md)（研发） |
+| 支持格式 | `txt` / `md` / `docx` / `xlsx` / `xls`（**PDF 未实现**） |
+| **文档索引** | [docs/README.md](docs/README.md) |
+| **开发进度** | [docs/开发进度.md](docs/开发进度.md) |
 | **创建库参数** | [docs/创建知识库接口参数.md](docs/创建知识库接口参数.md) |
+| **智能问答** | [docs/智能问答方案.md](docs/智能问答方案.md) |
+| **异步上传** | [docs/异步上传与OSS.md](docs/异步上传与OSS.md) |
 
 ---
 
 ## 目录
 
-- [一期 API 速览](#一期-api-速览)
+- [API 速览](#api-速览)
+- [智能问答方案](#智能问答方案)
 - [快速开始](#快速开始)
 - [构建与运行](#构建与运行)
 - [配置与 Profile](#配置与-profile)
@@ -29,12 +33,11 @@
 - [本地 Ollama](#本地-ollama)
 - [本机安装 pgvector](#本机安装-pgvector-windows)
 - [模块结构](#模块结构)
-- [二期规划](#二期规划)
-- [归档文档（docs/archive）](#归档文档docsarchive)
+- [功能状态](#功能状态)
 
 ---
 
-## 一期 API 速览
+## API 速览
 
 ```
 POST 创建知识库 → POST 上传文档 → GET 切片 / POST 问答
@@ -45,23 +48,50 @@ POST 创建知识库 → POST 上传文档 → GET 切片 / POST 问答
 | 创建知识库 | `POST` | `/api/v1/knowledge-bases` | 名称 + 切片/检索/AI 等全量配置 |
 | 查询知识库 | `GET` | `/api/v1/knowledge-bases` | 全部列表 |
 | 查询单个 | `GET` | `/api/v1/knowledge-bases?id={kbId}` | 按 ID |
-| 上传文档 | `POST` | `/api/v1/knowledge-bases/{kbId}/documents?smartChunk=false` | `multipart/form-data`，字段 `file` |
-| 文档列表 | `GET` | `/api/v1/knowledge-bases/{kbId}/documents` | |
+| 上传文档 | `POST` | `/api/v1/knowledge-bases/{kbId}/documents` | **202 异步**；单文件 `file`，批量 `files` |
+| 重复训练 | `POST` | `.../documents/{docId}/retrain` | 202，基于已归档原件 |
+| 上传看板 | `GET` | `.../upload-dashboard` | 状态/阶段汇总 |
+| 批量任务 | `GET` | `.../upload-batches/{batchId}` | 批次进度 |
+| 文档列表 | `GET` | `/api/v1/knowledge-bases/{kbId}/documents` | 含 `processStage`、OSS 字段 |
 | 切片列表 | `GET` | `/api/v1/knowledge-bases/{kbId}/chunks` | `docId` 可选；空则返回该库全部切片 |
 | 单文档切片 | `GET` | `/api/v1/knowledge-bases/{kbId}/documents/{docId}/chunks` | |
-| 问答 | `POST` | `/api/v1/knowledge-bases/{kbId}/chat` | JSON：`{"question":"..."}` |
+| 问答 | `POST` | `/api/v1/knowledge-bases/{kbId}/chat` | `question`；可选 `qaScheme`；响应含 `meta.schemeName` |
 
 **Swagger UI**（启动后）：
 
 | 入口 | URL |
 |------|-----|
+| **Scalar API 文档（推荐）** | http://localhost:8080/scalar |
+| 兼容入口 | http://localhost:8080/doc.html（重定向到 Scalar） |
 | Swagger UI | http://localhost:8080/swagger-ui/index.html |
-| 兼容入口 | http://localhost:8080/doc.html（重定向） |
 | OpenAPI JSON | http://localhost:8080/v3/api-docs |
 
-> Knife4j 4.5 与 SpringDoc 3 / Boot 4 不兼容，已改用 SpringDoc 官方 UI。详见 [docs/archive/testing.md](docs/archive/testing.md)。
+> Knife4j 4.5 与 SpringDoc 3 / Boot 4 不兼容，已改用 SpringDoc 官方 UI。说明见 [docs/开发进度.md](docs/开发进度.md) §11.3。
 
-上传链路日志前缀：**`[文档上传]`**（便于排查解析、切片、AI 回退）。
+上传链路日志前缀：**`[文档上传]`**；问答链路：**`[智能问答]`**。
+
+---
+
+## 智能问答方案
+
+创建库时可配置 `qa.scheme`，单次请求也可用 `qaScheme` 覆盖：
+
+| 方案名称 | `schemeName` | 编码 | 说明 |
+|----------|--------------|------|------|
+| 纯应用流水线 | `pipeline` | `1` | 原问检索 → 生成（默认） |
+| 协作渐进检索 | `collaborative_progressive` | `2` | 原问先搜；不足则 LLM 改写再搜 |
+| 协作全量改写 | `collaborative_always` | `3` | 每条先改写再检索 |
+| Agent 工具检索 | `agent` | `5` | LLM 调 `search_kb` tool |
+
+```powershell
+# 协作渐进检索（qaScheme=2，覆盖库配置）
+$body = '{"question":"离线建库流程有几步？","qaScheme":2}'
+Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/v1/knowledge-bases/$kbId/chat" `
+  -ContentType "application/json; charset=utf-8" `
+  -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
+```
+
+详见 **[docs/智能问答方案.md](docs/智能问答方案.md)**。
 
 ---
 
@@ -99,13 +129,23 @@ $kb = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/v1/knowledg
 $kbId = $kb.id
 ```
 
-**上传文档**
+**上传文档（202 异步 + 流式归档）**
 
 ```powershell
-Invoke-RestMethod -Method Post `
+$upload = Invoke-RestMethod -Method Post `
   -Uri "http://localhost:8080/api/v1/knowledge-bases/$kbId/documents?smartChunk=true" `
   -Form @{ file = Get-Item ".\scripts\sample.md" }
+$docId = $upload.docId
+
+# 轮询至建库完成后再问答
+do {
+  Start-Sleep -Seconds 2
+  $doc = Invoke-RestMethod "http://localhost:8080/api/v1/knowledge-bases/$kbId/documents/$docId"
+} while ($doc.status -notin @("SUCCESS", "FAILED"))
+if ($doc.status -eq "FAILED") { throw $doc.errorMessage }
 ```
+
+上传流程说明见 **[docs/异步上传与OSS.md](docs/异步上传与OSS.md)**。
 
 **问答**
 
@@ -163,7 +203,7 @@ Invoke-RestMethod -Method Post `
 | `inmemory` | 内存存储，单元测试/演示 |
 
 ```yaml
-# 一期核心配置（application.yaml / 创建库请求体）
+# 核心配置（application.yaml / 创建库请求体）
 ragchunk:
   chunking:
     mode: hybrid
@@ -184,6 +224,12 @@ ragchunk:
   retrieval:
     top-k: 3
     score-threshold: 0.5
+  qa:
+    scheme: 1
+    rewrite-min-score: 0.35
+    max-llm-calls: 2
+    max-search-rounds: 2
+    agent-max-iterations: 3
 ```
 
 **环境变量（数据库）**
@@ -208,42 +254,43 @@ ragchunk:
 | **增强** Augment | 把命中片段写入 Prompt | 组装上下文 |
 | **生成** Generate | LLM 有据作答 | 千问 / Ollama |
 
-### 离线建库（一期 5 步）
+### 离线建库（5 步）
 
 ```mermaid
 flowchart TD
-    S1[1 创建知识库] --> S2[2 上传文件]
-    S2 --> S3[3 解析 + 文本规范化]
+    S1[1 创建知识库] --> S2[2 上传 202 + 流式归档]
+    S2 --> S3[3 后台解析 + 规范化]
     S3 --> S4[4 混合切片<br/>规则 → 评估 → AI 可选]
     S4 --> S5[5 向量化入库]
 ```
 
-| 步骤 | 一期内容 | 二期规划 |
-|------|----------|----------|
-| 创建库 | 名称 + 全局默认配置 | 分步向导 |
-| 上传 | txt/md/docx/xlsx/xls | PDF、Notion、网页 |
-| 解析 | R0-1～R0-3 规范化 | 去 URL 等可选 |
-| 切片 | 规则 + T2/T4/T8 + `SEMANTIC_RESPLIT` | 父子模式、T3～T7、多 AI 任务 |
-| 入库 | DashScope Embedding + pgvector | 经济索引、关键词倒排 |
+| 步骤 | 已实现 · 已测试 | 未实现 · 未测试 |
+|------|------------------|------------------|
+| 创建库 | 名称 + 配置快照 | 分步向导、更新库 API |
+| 上传 | 202 异步、流式归档、轮询、看板 | PDF、OSS 服务端拉取、Webhook |
+| 解析 | R0 规范化（txt/md/docx/xlsx/xls） | 内容质量系统验收 |
+| 切片 | 规则 + T2/T4/T8 + `SEMANTIC_RESPLIT` | 父子模式、T3/T5/T6/T7 |
+| 入库 | Embedding + pgvector | 经济索引、关键词倒排 |
 
-文档处理状态：`PROCESSING` → `SUCCESS` / `FAILED`。
+文档处理：`POST` 返回 **202** → 轮询 `processStage`（`QUEUED` → … → `SUCCESS` / `FAILED`）。详见 [异步上传与OSS.md](docs/异步上传与OSS.md)。
 
 ### 在线问答
+
+默认 **纯应用流水线**：应用负责向量检索，LLM 仅生成答案。其它编排见 [智能问答方案](#智能问答方案) 与 [docs/智能问答方案.md](docs/智能问答方案.md)。
 
 ```mermaid
 sequenceDiagram
     participant U as 用户
-    participant API as RagChunk API
-    participant VDB as 向量库
+    participant API as ChatOrchestrator
+    participant VDB as pgvector
     participant LLM as 千问/Ollama
 
-    U->>API: 提问
-    API->>API: Query 向量化
-    API->>VDB: 检索 TopK / 阈值
-    VDB-->>API: 相关 Chunk
-    API->>LLM: 上下文 + 问题
-    LLM-->>API: 回答
-    API-->>U: 回答（含 citations）
+    U->>API: question + qa.scheme
+    API->>API: embed + search（应用）
+    VDB-->>API: TopK chunks
+    API->>LLM: 参考资料 + 原问
+    LLM-->>API: answer
+    API-->>U: answer + citations + meta
 ```
 
 ### 关键约束
@@ -251,10 +298,10 @@ sequenceDiagram
 | 规则 | 说明 |
 |------|------|
 | Embedding 一致 | 同一知识库入库与查询须用同一向量模型 |
-| 分段模式 | 通用/父子模式创建后不可改（一期仅通用） |
+| 分段模式 | 当前仅 **通用** 单层 Chunk（父子模式未实现） |
 | 有据作答 | 无命中时应说明「未找到」，避免编造 |
 
-业务活动编号（KB-01～QA-08）、角色与运维场景见 [docs/archive/business-process.md](docs/archive/business-process.md)。
+功能状态总览见 [docs/开发进度.md](docs/开发进度.md) §3。
 
 ---
 
@@ -275,7 +322,7 @@ flowchart TD
     H -->|失败| F
 ```
 
-### 一期触发规则
+### 混合切片触发规则
 
 | 触发 ID | 条件 | 任务 |
 |---------|------|------|
@@ -287,7 +334,7 @@ flowchart TD
 
 **决策顺序**（`auto`）：`never` → 规则；`always` → AI；`smartChunk=true` → AI；质量分低或单段过长 → AI；否则规则。
 
-**一期质量分**（简化）：
+**质量分**（简化）：
 
 ```text
 quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_doc ? 30 : 0)
@@ -295,28 +342,28 @@ quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_do
 
 **AI 输出**：JSON `{"chunks":[{"text":"..."}]}`；校验 V1 段长、V2 覆盖率≥95%、V4 JSON 合法；失败重试 1 次后 `ai_fallback=true`。
 
-完整规则 R0～R3、触发 T0～T8、任务与配额见 [docs/archive/hybrid-chunking.md](docs/archive/hybrid-chunking.md)；一期裁剪见 [docs/archive/phase1-scope.md](docs/archive/phase1-scope.md)。
+触发规则见上文；详见 [docs/开发进度.md](docs/开发进度.md) §5。
 
 ---
 
 ## 分段与检索参数
 
-### 分段模式（规划对照 Dify）
+### 分段模式
 
-| 模式 | 说明 | 一期 |
-|------|------|------|
-| 通用 | 单层 Chunk | ✅ |
-| 父子 | 子段检索、父段返回 | 二期 |
-
-通用参数：`max_chars`（默认 1200）、`min_chars`（80）、`overlap`（80）、分隔符按 `plain` / `markdown` profile。
-
-### 索引（一期）
-
-| 方式 | 一期 |
+| 模式 | 状态 |
 |------|------|
-| 高质量向量（pgvector） | ✅ |
-| 经济关键词倒排 | 二期 |
-| 混合检索 / Rerank | 二期或可选 |
+| 通用（单层 Chunk） | 已实现 · 已测试 |
+| 父子（子段检索、父段返回） | 未实现 · 未测试 |
+
+通用参数：`max_chars`（默认 1200）、`min_chars`（80）、`overlap`（80）。
+
+### 索引
+
+| 方式 | 状态 |
+|------|------|
+| 高质量向量（pgvector） | 已实现 · 已测试 |
+| 经济关键词倒排 | 未实现 · 未测试 |
+| 混合检索 / Rerank | 未实现 · 未测试 |
 
 ### 检索（问答时）
 
@@ -325,7 +372,7 @@ quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_do
 | `topK` | 3 | 最多送入 LLM 的 Chunk 数 |
 | `scoreThreshold` | 0.5 | 低于阈值的片段丢弃 |
 
-调参速查：答非所问 → 提高阈值、减小 TopK；总说找不到 → 降低阈值或补文档。详见 [docs/archive/retrieval.md](docs/archive/retrieval.md)。
+调参速查：答非所问 → 提高阈值、减小 TopK；总说找不到 → 降低阈值或补文档。字段说明见 [docs/创建知识库接口参数.md](docs/创建知识库接口参数.md)。
 
 ---
 
@@ -370,7 +417,7 @@ SELECT tablename FROM pg_tables WHERE schemaname = 'public';
 SELECT * FROM flyway_schema_history;
 ```
 
-完整字段说明、运维 SQL 见 [docs/archive/database.md](docs/archive/database.md)。
+表结构与数据保存见 [docs/开发进度.md](docs/开发进度.md) §9。
 
 ### Docker PostgreSQL（可选）
 
@@ -404,7 +451,7 @@ $env:RUN_PG_INTEGRATION = "1"
 .\mvnw.cmd test -Dtest=RagChunkPostgresIntegrationTest
 ```
 
-验证清单、Swagger 调试、乱码处理见 [docs/archive/testing.md](docs/archive/testing.md)。
+联调清单与 Scalar 调试见 [docs/开发进度.md](docs/开发进度.md) §11。
 
 ---
 
@@ -425,7 +472,7 @@ $env:OLLAMA_CHAT_MODEL = "qwen2.5:14b"
 | 对话/切片模型 | `qwen2.5:14b` |
 | 远程向量 | 关闭（`embedding.remote-enabled=false`，用本地 hash） |
 
-上传 `smartChunk=true` 且库 `aiMode` 非 `never` 时会调 Ollama 做语义重切。故障排查表见 [docs/archive/ollama.md](docs/archive/ollama.md)。
+上传 `smartChunk=true` 且库 `aiMode` 非 `never` 时会调 Ollama 做语义重切。`chat` 404 时检查 `base-url` 须带 `/v1`；连接超时检查防火墙与 `192.168.14.57:11434` 可达性。
 
 ---
 
@@ -442,7 +489,7 @@ scripts\install-pgvector-windows.cmd -PgRoot "D:\AnZhuang\PostgreSQL17" -SuperPa
 
 连接：`localhost:5432/ragchunk`，`postgres` / `123`（与 `application-local.yaml` 一致）。
 
-手动步骤与验证命令见 [docs/archive/install-pgvector-windows.md](docs/archive/install-pgvector-windows.md)。
+安装后验证：`psql -U postgres -d ragchunk -c "CREATE EXTENSION IF NOT EXISTS vector;"`
 
 ---
 
@@ -450,46 +497,29 @@ scripts\install-pgvector-windows.cmd -PgRoot "D:\AnZhuang\PostgreSQL17" -SuperPa
 
 ```
 src/main/java/com/xtsh/ragchunk/
-├── knowledge/       # 知识库 CRUD、KnowledgeBaseConfig
+├── knowledge/       # 知识库 CRUD、KnowledgeBaseConfig、QaConfig
 ├── document/        # 上传、DocumentService、Controller
 ├── ingest/          # 解析、规则切片、AI 触发、语义重切、ChunkIngestPipeline
 ├── chunk/           # 切片查询 API
 ├── embedding/       # DashScope / Ollama / 本地 hash
+├── document/        # 流式上传、异步入库、看板
+├── storage/         # 原件 putStream / openStream
 ├── vector/          # PgVectorStore、内存 VectorStore
-├── chat/            # 检索 + LLM 问答
-├── integration/     # DashScope / OpenAI 兼容 HTTP
+├── chat/            # ChatOrchestrator、检索/改写/生成、Agent tool
+├── integration/     # DashScope / OpenAI 兼容 HTTP（含 tools）
 └── config/          # MyBatis、Swagger、存储模式
 ```
 
 ---
 
-## 二期规划
+## 功能状态
 
-| 文档 | 内容 |
+完整清单见 **[docs/开发进度.md](docs/开发进度.md) §3**。摘要：
+
+| 分类 | 示例 |
 |------|------|
-| [二期规划-对象存储.md](docs/二期规划-对象存储.md) | **二期必做**：原始文件上传 **MinIO/S3**，`document.storage_key` |
-| [二期规划-异步任务.md](docs/二期规划-异步任务.md) | **二期必做**：上传异步入队、处理阶段与进度轮询 API |
-
----
-
-## 归档文档（docs/archive）
-
-详细版设计文档已移至 **[docs/archive/](docs/archive/)**（日常以本文为准）：
-
-| 文档 | 内容 |
-|------|------|
-| [phase1-scope.md](docs/archive/phase1-scope.md) | 一期范围与不做项 |
-| [architecture.md](docs/archive/architecture.md) | 架构、与 Dify 对照 |
-| [business-process.md](docs/archive/business-process.md) | 业务流程、角色、KB/QA 活动表 |
-| [rag-flow.md](docs/archive/rag-flow.md) | 标准 RAG 8 步 + 一期 5 步对照 |
-| [chunking.md](docs/archive/chunking.md) | 分段策略、通用/父子 |
-| [hybrid-chunking.md](docs/archive/hybrid-chunking.md) | 混合切片完整规则 R0～R3、T0～T8 |
-| [indexing.md](docs/archive/indexing.md) | 高质量/经济索引 |
-| [retrieval.md](docs/archive/retrieval.md) | TopK、阈值、Rerank |
-| [database.md](docs/archive/database.md) | 表结构、迁移、运维 SQL |
-| [testing.md](docs/archive/testing.md) | 测试与 Swagger 说明 |
-| [ollama.md](docs/archive/ollama.md) | Ollama 配置与排错 |
-| [install-pgvector-windows.md](docs/archive/install-pgvector-windows.md) | pgvector 安装细节 |
+| **已实现 · 已测试** | 建库、202 上传、流式归档、异步入库、四种问答编排、`mvn test` / 联调脚本 |
+| **未实现 · 未测试** | PDF、删除/更新库 API、S3 SDK、OSS 拉取、Webhook/SSE、Rerank、父子分段 |
 
 ---
 

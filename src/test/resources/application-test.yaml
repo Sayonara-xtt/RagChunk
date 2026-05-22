@@ -1,0 +1,12 @@
+ragchunk:
+  storage:
+    mode: postgres
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragchunk
+    username: postgres
+    password: "123"
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true

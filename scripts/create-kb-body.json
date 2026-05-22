@@ -1,0 +1,28 @@
+{
+  "name": "接口测试库",
+  "description": "创建知识库接口测试",
+  "chunking": {
+    "mode": "hybrid",
+    "aiMode": "never"
+  },
+  "rule": {
+    "maxChars": 1200,
+    "minChars": 80,
+    "overlap": 80
+  },
+  "quality": {
+    "scoreThreshold": 70
+  },
+  "ai": {
+    "chunkModel": "qwen-plus",
+    "maxCallsPerDoc": 1,
+    "maxInputTokens": 8000
+  },
+  "embedding": {
+    "model": "text-embedding-v3"
+  },
+  "retrieval": {
+    "topK": 3,
+    "scoreThreshold": 0.3
+  }
+}

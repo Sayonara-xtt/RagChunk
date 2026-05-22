@@ -1,0 +1,12 @@
+# 无 PostgreSQL 时使用：mvn spring-boot:run -Dspring-boot.run.profiles=inmemory
+ragchunk:
+  storage:
+    mode: inmemory
+    vector-store: inmemory
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+      - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration

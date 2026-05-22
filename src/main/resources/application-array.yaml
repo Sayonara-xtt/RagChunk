@@ -1,0 +1,15 @@
+# 本机 PostgreSQL，向量 real[]（无 pgvector 扩展时使用）
+# 启动: mvn spring-boot:run -Dspring-boot.run.profiles=array
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${RAGCHUNK_DB_HOST:localhost}:${RAGCHUNK_DB_PORT:5432}/${RAGCHUNK_DB_NAME:ragchunk}
+    username: ${RAGCHUNK_DB_USER:postgres}
+    password: ${RAGCHUNK_DB_PASSWORD:123}
+  flyway:
+    locations: classpath:db/migration-local
+
+ragchunk:
+  storage:
+    mode: postgres
+    vector-store: array

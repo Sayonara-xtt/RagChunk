@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ragchunk-postgres
+    environment:
+      POSTGRES_DB: ragchunk
+      POSTGRES_USER: ragchunk
+      POSTGRES_PASSWORD: ragchunk
+    ports:
+      - "5433:5432"
+    volumes:
+      - ragchunk_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ragchunk -d ragchunk"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ragchunk_pg_data:

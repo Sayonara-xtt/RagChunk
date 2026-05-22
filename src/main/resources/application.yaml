@@ -1,0 +1,73 @@
+# =============================================================================
+# RagChunk 基础配置（生产/开发共用，改这里前先看清注释）
+# =============================================================================
+# 分层说明：
+#   1. 本文件 application.yaml     — 启动必需：数据源、存储模式、Flyway、上传限制
+#   2. application-optional.yaml   — 可选默认：Swagger、切片/检索/模型默认值（自动 import）
+#   3. application-{profile}.yaml  — 环境覆盖：local / docker / ollama / inmemory / array
+#
+# 激活环境：SPRING_PROFILES_ACTIVE=local（默认）| local,ollama | docker | inmemory | array
+# 数据库环境变量：RAGCHUNK_DB_HOST / PORT / NAME / USER / PASSWORD
+# =============================================================================
+
+spring:
+  config:
+    # 可选配置：文件不存在也不影响启动
+    import: optional:classpath:application-optional.yaml
+
+  application:
+    name: RagChunk
+
+  # 默认 local + ollama（本地 LLM 无需 DASHSCOPE_API_KEY）
+  # 环境变量 SPRING_PROFILES_ACTIVE 可整体覆盖，如仅 local 或 docker
+  profiles:
+    active: local,ollama
+
+  # --- 数据源（须与 Flyway 迁移后的库一致）---
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${RAGCHUNK_DB_HOST:localhost}:${RAGCHUNK_DB_PORT:5432}/${RAGCHUNK_DB_NAME:ragchunk}
+    username: ${RAGCHUNK_DB_USER:postgres}
+    password: ${RAGCHUNK_DB_PASSWORD:123}
+
+  # 表结构由 Flyway 管理，不要用 ORM 自动建表
+  flyway:
+    enabled: true
+
+  # 文档上传 multipart（txt/md/docx/xlsx/xls）
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# MyBatis Plus：知识库/文档元数据；chunk 向量仍走 JdbcTemplate
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 业务主键手填 kb_xxx / doc_xxx，非自增
+      id-type: input
+
+ragchunk:
+  phase: 1
+
+  # 存储模式（决定注册哪些 Bean，改错会导致 VectorStore 找不到）
+  storage:
+    # postgres：持久化到 PostgreSQL；inmemory：内存演示（须配 profile inmemory）
+    mode: postgres
+    # pgvector：推荐；array：无 pgvector 扩展时用 real[]；inmemory：内存向量
+    vector-store: pgvector
+
+  # LLM / Embedding 连接（创建知识库时的默认配置会与此合并，见 optional）
+  dashscope:
+    # 阿里云 DashScope；Ollama 时由 profile ollama 覆盖 provider
+    api-key: ${DASHSCOPE_API_KEY:}
+
+  # 向量维度须与库表 chunk.embedding vector(N) 及迁移脚本一致
+  embedding:
+    dimensions: 1024

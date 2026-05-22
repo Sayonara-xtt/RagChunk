@@ -1,0 +1,16 @@
+# Docker PostgreSQL + pgvector（可选，端口 5433）
+# .\scripts\start-postgres-docker.ps1
+# mvn spring-boot:run -Dspring-boot.run.profiles=docker
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${RAGCHUNK_DB_HOST:localhost}:${RAGCHUNK_DB_PORT:5433}/${RAGCHUNK_DB_NAME:ragchunk}
+    username: ${RAGCHUNK_DB_USER:ragchunk}
+    password: ${RAGCHUNK_DB_PASSWORD:ragchunk}
+  flyway:
+    locations: classpath:db/migration
+
+ragchunk:
+  storage:
+    mode: postgres
+    vector-store: pgvector

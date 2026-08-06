@@ -1,5 +1,6 @@
 package com.xtsh.ragchunk.vector;
 
+import lombok.RequiredArgsConstructor;
 import com.pgvector.PGvector;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository
 @ConditionalOnProperty(name = "ragchunk.storage.mode", havingValue = "postgres", matchIfMissing = true)
 @ConditionalOnProperty(name = "ragchunk.storage.vector-store", havingValue = "pgvector", matchIfMissing = true)
@@ -17,9 +19,6 @@ public class PgVectorStore implements VectorStore {
 
     private final JdbcTemplate jdbc;
 
-    public PgVectorStore(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-    }
 
     @Override
     public void upsert(VectorRecord record) {

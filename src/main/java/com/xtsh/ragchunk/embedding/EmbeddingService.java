@@ -1,10 +1,12 @@
 package com.xtsh.ragchunk.embedding;
 
+import lombok.RequiredArgsConstructor;
 import com.xtsh.ragchunk.config.RagChunkProperties;
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class EmbeddingService {
 
@@ -12,12 +14,6 @@ public class EmbeddingService {
     private final DashScopeHttpClient dashScope;
     private final LocalHashEmbeddingService localHash;
 
-    public EmbeddingService(RagChunkProperties properties, DashScopeHttpClient dashScope,
-                            LocalHashEmbeddingService localHash) {
-        this.properties = properties;
-        this.dashScope = dashScope;
-        this.localHash = localHash;
-    }
 
     public float[] embed(String text, KnowledgeBaseConfig.EmbeddingConfig config) throws Exception {
         int dim = properties.getEmbedding().getDimensions();

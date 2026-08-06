@@ -3,6 +3,9 @@
   "kbId": "kb_93154bcde024",
   "fileName": "sample.md",
   "status": "SUCCESS",
+  "processStage": "SUCCESS",
+  "processStageLabel": "完成",
+  "progressPercent": 100,
   "chunkCount": 3,
   "profile": "markdown",
   "qualityScore": 92,
@@ -10,5 +13,13 @@
   "aiTriggerId": null,
   "aiFallback": false,
   "errorMessage": null,
-  "createdAt": "2026-05-20T08:12:05.441221Z"
+  "batchId": null,
+  "fileSize": 1284,
+  "storageKey": "kb_93154bcde024/doc_f3a8b2c91e04/sample.md",
+  "storageUrl": "http://127.0.0.1:9000/ragchunk/kb_93154bcde024/doc_f3a8b2c91e04/sample.md",
+  "contentHash": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+  "sourceType": "API_SINGLE",
+  "retrainVersion": 0,
+  "createdAt": "2026-05-22T07:12:05.441221Z",
+  "updatedAt": "2026-05-22T07:12:15.883902Z"
 }

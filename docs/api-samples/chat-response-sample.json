@@ -1,5 +1,5 @@
 {
-  "answer": "【本地模式-无 LLM】检索到 2 条相关内容：\n\n# RagChunk 一期说明\n\n## 离线建库流程（5 步）\n\n1. 创建知识库：通过 API 传递切片、索引、检索等参数。\n...\n\n---\n\n## 在线问答\n\n用户提问后，系统对问题向量化，在知识库中检索 TopK 条分段，再交给大模型生成回答。",
+  "answer": "根据参考资料，一期离线建库包含 5 步：创建知识库、上传文件、解析与文本规范化、混合切片、向量化入库。",
   "citations": [
     {
       "chunkId": "doc_f3a8b2c91e04_c0000",
@@ -13,7 +13,16 @@
       "docId": "doc_f3a8b2c91e04",
       "chunkIndex": 2,
       "score": 0.55,
-      "excerpt": "## 在线问答\n\n用户提问后，系统对问题向量化，在知识库中检索 TopK 条分段，再交给大模型生成回答。..."
+      "excerpt": "## 在线问答\n\n用户提问后，系统按 qa.scheme 编排检索与 LLM 生成..."
     }
-  ]
+  ],
+  "meta": {
+    "scheme": 2,
+    "schemeName": "collaborative_progressive",
+    "llmCalls": 2,
+    "searchRounds": 2,
+    "rewriteTriggered": true,
+    "hitCount": 2,
+    "maxScore": 0.68
+  }
 }

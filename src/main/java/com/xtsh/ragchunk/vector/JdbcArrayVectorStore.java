@@ -1,5 +1,6 @@
 package com.xtsh.ragchunk.vector;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * 本机 PostgreSQL 持久化（无需 pgvector），向量存 real[]，检索在应用内算余弦相似度。
  */
+@RequiredArgsConstructor
 @Repository
 @ConditionalOnProperty(name = "ragchunk.storage.mode", havingValue = "postgres", matchIfMissing = true)
 @ConditionalOnProperty(name = "ragchunk.storage.vector-store", havingValue = "array")
@@ -22,9 +24,6 @@ public class JdbcArrayVectorStore implements VectorStore {
 
     private final JdbcTemplate jdbc;
 
-    public JdbcArrayVectorStore(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-    }
 
     @Override
     public void upsert(VectorRecord record) {

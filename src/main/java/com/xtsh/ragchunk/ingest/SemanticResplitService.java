@@ -1,11 +1,11 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.TextChunk;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import com.xtsh.ragchunk.dto.chunk.TextChunk;
 import com.xtsh.ragchunk.config.RagChunkProperties;
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -17,22 +17,16 @@ import java.util.List;
  * 千问语义重切（任务 SEMANTIC_RESPLIT）：将全文交给 LLM，要求返回 JSON 切片列表。
  * <p>Prompt 规则见 {@link SemanticResplitPromptBuilder}，与 {@link ChunkValidationService} 校验对齐。
  */
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class SemanticResplitService {
-
-    private static final Logger log = LoggerFactory.getLogger(SemanticResplitService.class);
 
     private final DashScopeHttpClient dashScope;
     private final RagChunkProperties ragChunkProperties;
     private final RuleChunker ruleChunker;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public SemanticResplitService(DashScopeHttpClient dashScope, RagChunkProperties ragChunkProperties,
-                                  RuleChunker ruleChunker) {
-        this.dashScope = dashScope;
-        this.ragChunkProperties = ragChunkProperties;
-        this.ruleChunker = ruleChunker;
-    }
 
     /**
      * 调用 LLM 重切；失败由 {@link HybridChunkingService} 捕获并回退规则切片。

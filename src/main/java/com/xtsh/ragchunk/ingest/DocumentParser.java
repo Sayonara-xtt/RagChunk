@@ -1,6 +1,7 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.web.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
+import com.xtsh.ragchunk.exception.BadRequestException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,8 +14,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,25 +24,63 @@ import java.util.List;
 
 /** 上传文件解析：支持 txt / md / markdown / docx / xlsx / xls，按扩展名分支。 */
 @Component
+@Slf4j
 public class DocumentParser {
 
-    private static final Logger log = LoggerFactory.getLogger(DocumentParser.class);
     private static final DataFormatter CELL_FORMATTER = new DataFormatter();
 
-    public String parse(MultipartFile file) {
-        String name = file.getOriginalFilename() != null ? file.getOriginalFilename().toLowerCase() : "";
+    public String parse(MultipartFile file) throws Exception {
+        try (InputStream in = file.getInputStream()) {
+            return parseStream(in, file.getOriginalFilename());
+        }
+    }
+
+    /**
+     * 从输入流解析（流式归档后入库、重训使用）。
+     */
+    public String parseStream(InputStream input, String originalFileName) {
+        String name = originalFileName != null ? originalFileName.toLowerCase() : "";
         try {
             String text;
             String type;
             if (name.endsWith(".txt") || name.endsWith(".md") || name.endsWith(".markdown")) {
                 type = "text";
-                text = new String(file.getBytes(), StandardCharsets.UTF_8);
+                text = new String(input.readAllBytes(), StandardCharsets.UTF_8);
             } else if (name.endsWith(".docx")) {
                 type = "docx";
-                text = parseDocx(file.getInputStream());
+                text = parseDocx(input);
             } else if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
                 type = name.endsWith(".xlsx") ? "xlsx" : "xls";
-                text = parseExcel(file.getInputStream());
+                text = parseExcel(input);
+            } else {
+                throw new BadRequestException("unsupported file type, use txt, md, docx, xlsx, or xls");
+            }
+            log.info("[文档上传] 文件解析 类型={}, 字符数={}", type, text.length());
+            return text;
+        } catch (BadRequestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BadRequestException("failed to parse file: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 从字节解析（测试或内存数据）。
+     */
+    public String parseBytes(byte[] data, String originalFileName) {
+        String name = originalFileName != null ? originalFileName.toLowerCase() : "";
+        try {
+            String text;
+            String type;
+            if (name.endsWith(".txt") || name.endsWith(".md") || name.endsWith(".markdown")) {
+                type = "text";
+                text = new String(data, StandardCharsets.UTF_8);
+            } else if (name.endsWith(".docx")) {
+                type = "docx";
+                text = parseDocx(new java.io.ByteArrayInputStream(data));
+            } else if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
+                type = name.endsWith(".xlsx") ? "xlsx" : "xls";
+                text = parseExcel(new java.io.ByteArrayInputStream(data));
             } else {
                 throw new BadRequestException("unsupported file type, use txt, md, docx, xlsx, or xls");
             }

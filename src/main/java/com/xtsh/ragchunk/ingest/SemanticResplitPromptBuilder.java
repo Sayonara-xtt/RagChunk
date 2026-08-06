@@ -1,6 +1,6 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 
 /**
  * 构建 {@link SemanticResplitService} 的 SYSTEM / USER Prompt，与 {@link ChunkValidationService} V1/V2 对齐。

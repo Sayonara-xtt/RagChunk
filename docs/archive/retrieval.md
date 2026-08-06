@@ -1,10 +1,10 @@
-﻿> **已归档**。主文档见 [README.md](../../README.md)。
+﻿> **已归档**。请以 [开发进度.md](../开发进度.md) 与 [docs/README.md](../README.md) 为准。
 
 # 检索参数：TopK、相似度阈值、Rerank
 
 作用于 **用户提问 → 召回 Chunk → 送入 LLM**（在线步骤 11～13）。
 
-参考：[Dify - 指定检索设置](https://docs.dify.ai/zh/use-dify/knowledge/create-knowledge/setting-indexing-methods#指定检索设置)  
+参考：检索 TopK 与相似度阈值（外部产品文档不在此维护链接）  
 业务活动：**KB-03**、**QA-03**、**QA-04**（见 [business-process.md](business-process.md)）
 
 ## 1. 整体流水线

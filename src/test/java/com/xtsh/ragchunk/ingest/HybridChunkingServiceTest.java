@@ -1,7 +1,8 @@
 package com.xtsh.ragchunk.ingest;
 
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +17,8 @@ class HybridChunkingServiceTest {
             new KnowledgeBaseConfig.QualityConfig(70),
             new KnowledgeBaseConfig.AiConfig("qwen-plus", 1, 8000, 1),
             new KnowledgeBaseConfig.EmbeddingConfig("text-embedding-v3"),
-            new KnowledgeBaseConfig.RetrievalConfig(3, 0.5)
+            new KnowledgeBaseConfig.RetrievalConfig(3, 0.5),
+            new QaConfig(1, 0.35, 2, 2, 2, 3, 1, false)
     );
 
     @Test

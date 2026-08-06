@@ -1,10 +1,10 @@
-﻿> **已归档**。主文档见 [README.md](../../README.md)。
+﻿> **已归档**。请以 [开发进度.md](../开发进度.md) 与 [docs/README.md](../README.md) 为准。
 
 # 分段策略（Chunking）
 
 文档导入后会被拆成 **分段（Chunk）**，作为检索的最小单元。
 
-参考：[Dify - 指定分段设置](https://docs.dify.ai/zh/use-dify/knowledge/create-knowledge/chunking-and-cleaning-text)  
+参考：通用分段与清洗策略（外部产品文档不在此维护链接）  
 业务活动：**KB-02**、**KB-06**（见 [business-process.md](business-process.md)）
 
 ## 1. 不变量

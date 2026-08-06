@@ -1,8 +1,8 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.QualityReport;
-import com.xtsh.ragchunk.chunk.model.TextChunk;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.chunk.QualityReport;
+import com.xtsh.ragchunk.dto.chunk.TextChunk;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class ChunkQualityEvaluator {
         double weakRatio = (double) weakCount / n;
         // 长文仅 1 段 → 易触发 T4 千问重切
         boolean singleChunk = totalTextLength > 1500 && n == 1;
-        // 一期简化公式：short*40 + weak*50 + 单段*30，见 docs/archive/phase1-scope.md
+        // 质量分简化公式：short*40 + weak*50 + 单段*30，见 docs/开发进度.md §5
         int score = (int) Math.round(100 - shortRatio * 40 - weakRatio * 50 - (singleChunk ? 30 : 0));
         score = Math.max(0, Math.min(100, score));
         return new QualityReport(n, shortRatio, weakRatio, singleChunk, score);

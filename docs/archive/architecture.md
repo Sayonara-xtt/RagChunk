@@ -1,4 +1,4 @@
-﻿> **已归档**。主文档见 [README.md](../../README.md)。
+﻿> **已归档**。请以 [开发进度.md](../开发进度.md) 与 [docs/README.md](../README.md) 为准。
 
 # 架构与业务流程
 
@@ -70,7 +70,7 @@ sequenceDiagram
 | 处理状态 | waiting → parsing → cleaning → splitting → indexing | 建议异步任务 + 状态轮询 |
 | 问答 | 应用内上下文 / 知识检索节点 | REST API + 本地检索 |
 
-参考：[Dify 知识库](https://docs.dify.ai/zh/use-dify/knowledge/readme)、[快速创建](https://docs.dify.ai/zh/use-dify/knowledge/create-knowledge/introduction)。
+参考：行业通用 RAG 知识库产品设计（外部产品文档不在此维护链接）。
 
 ## 4. 约束与不变量
 

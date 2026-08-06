@@ -1,10 +1,10 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.HybridChunkResult;
-import com.xtsh.ragchunk.chunk.model.TextChunk;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import com.xtsh.ragchunk.dto.chunk.HybridChunkResult;
+import com.xtsh.ragchunk.dto.chunk.TextChunk;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +12,11 @@ import java.util.List;
 /**
  * 混合切片：规则切片必走；千问语义重切按 {@link AiChunkTrigger} 决策（T0/T2/T4/T8 等）。
  */
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class HybridChunkingService {
 
-    private static final Logger log = LoggerFactory.getLogger(HybridChunkingService.class);
     private static final String TASK = "SEMANTIC_RESPLIT";
 
     private final RuleChunker ruleChunker;
@@ -24,15 +25,6 @@ public class HybridChunkingService {
     private final SemanticResplitService semanticResplitService;
     private final ChunkValidationService validationService;
 
-    public HybridChunkingService(RuleChunker ruleChunker, ChunkQualityEvaluator qualityEvaluator,
-                                 AiChunkTrigger aiChunkTrigger, SemanticResplitService semanticResplitService,
-                                 ChunkValidationService validationService) {
-        this.ruleChunker = ruleChunker;
-        this.qualityEvaluator = qualityEvaluator;
-        this.aiChunkTrigger = aiChunkTrigger;
-        this.semanticResplitService = semanticResplitService;
-        this.validationService = validationService;
-    }
 
     /**
      * 混合切片主流程：规则切片 → 质量评估 → 按需 AI 重切 → 校验 → 回退。

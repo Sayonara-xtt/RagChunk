@@ -1,8 +1,8 @@
 package com.xtsh.ragchunk.config;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
@@ -11,21 +11,15 @@ import org.springframework.stereotype.Component;
 /**
  * 启动时打印 LLM 是否可用，便于排查「LLM未配置」。
  */
+@RequiredArgsConstructor
 @Component
+@Slf4j
 public class LlmStartupLogger implements ApplicationRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(LlmStartupLogger.class);
 
     private final Environment environment;
     private final RagChunkProperties properties;
     private final DashScopeHttpClient dashScope;
 
-    public LlmStartupLogger(Environment environment, RagChunkProperties properties,
-                            DashScopeHttpClient dashScope) {
-        this.environment = environment;
-        this.properties = properties;
-        this.dashScope = dashScope;
-    }
 
     @Override
     public void run(ApplicationArguments args) {

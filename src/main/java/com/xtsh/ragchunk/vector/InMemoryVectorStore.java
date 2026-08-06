@@ -1,5 +1,6 @@
 package com.xtsh.ragchunk.vector;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Repository
 @ConditionalOnProperty(name = "ragchunk.storage.mode", havingValue = "inmemory")
 public class InMemoryVectorStore implements VectorStore {

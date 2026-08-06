@@ -1,6 +1,8 @@
 package com.xtsh.ragchunk.integration.dashscope;
 
 
+
+import lombok.RequiredArgsConstructor;
 import com.xtsh.ragchunk.config.RagChunkProperties;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
@@ -17,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 统一 LLM / Embedding HTTP 客户端。切片与问答均走 OpenAI 兼容 {@code /v1/chat/completions}。
- * <p>provider=ollama 时请求本地 Ollama（无需 Authorization）；否则走 DashScope。
- */
+ * 缁熶竴 LLM / Embedding HTTP 瀹㈡埛绔€傚垏鐗囦笌闂瓟鍧囪蛋 OpenAI 鍏煎 {@code /v1/chat/completions}銆? * <p>provider=ollama 鏃惰姹傛湰鍦?Ollama锛堟棤闇€ Authorization锛夛紱鍚﹀垯璧?DashScope銆? */
+@RequiredArgsConstructor
 @Component
 public class DashScopeHttpClient {
 
@@ -27,32 +28,25 @@ public class DashScopeHttpClient {
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30)).build();
 
-    public DashScopeHttpClient(RagChunkProperties properties) {
-        this.properties = properties;
-    }
-
-    /** Ollama：baseUrl 非空即可；DashScope：需 DASHSCOPE_API_KEY */
+    /** Ollama锛歜aseUrl 闈炵┖鍗冲彲锛汥ashScope锛氶渶 DASHSCOPE_API_KEY */
     public boolean isConfigured() {
         return properties.getDashscope().isLlmConfigured();
     }
 
     /**
-     * 语义切片与 RAG 问答共用。模型名来自知识库 config.ai.chunkModel 或 ragchunk.chat.model。
-     */
+     * 璇箟鍒囩墖涓?RAG 闂瓟鍏辩敤銆傛ā鍨嬪悕鏉ヨ嚜鐭ヨ瘑搴?config.ai.chunkModel 鎴?ragchunk.chat.model銆?     */
     public String chat(String model, String systemPrompt, String userContent) throws Exception {
         return postChat(model, systemPrompt, userContent, false);
     }
 
     /**
-     * 语义切片专用：降低随机性并请求 JSON 输出（Ollama {@code format=json} / DashScope response_format）。
-     */
+     * 璇箟鍒囩墖涓撶敤锛氶檷浣庨殢鏈烘€у苟璇锋眰 JSON 杈撳嚭锛圤llama {@code format=json} / DashScope response_format锛夈€?     */
     public String chatJson(String model, String systemPrompt, String userContent) throws Exception {
         return postChat(model, systemPrompt, userContent, true);
     }
 
     /**
-     * Agent 问答：支持 tools / tool_calls（OpenAI 兼容）。
-     */
+     * Agent 闂瓟锛氭敮鎸?tools / tool_calls锛圤penAI 鍏煎锛夈€?     */
     public ChatCompletionResult chatWithTools(String model, List<Map<String, Object>> messages,
                                               List<Map<String, Object>> tools) throws Exception {
         var body = new LinkedHashMap<String, Object>();
@@ -99,7 +93,7 @@ public class DashScopeHttpClient {
         try {
             resp = http.send(req.build(), HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-            throw new IllegalStateException(providerLabel() + " chat 连接失败: " + chatUrl + " — "
+            throw new IllegalStateException(providerLabel() + " chat 杩炴帴澶辫触: " + chatUrl + " 鈥?"
                     + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
         }
         if (resp.statusCode() >= 400) {

@@ -1,6 +1,7 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.web.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
+import com.xtsh.ragchunk.exception.BadRequestException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,8 +14,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,9 +24,9 @@ import java.util.List;
 
 /** 上传文件解析：支持 txt / md / markdown / docx / xlsx / xls，按扩展名分支。 */
 @Component
+@Slf4j
 public class DocumentParser {
 
-    private static final Logger log = LoggerFactory.getLogger(DocumentParser.class);
     private static final DataFormatter CELL_FORMATTER = new DataFormatter();
 
     public String parse(MultipartFile file) throws Exception {

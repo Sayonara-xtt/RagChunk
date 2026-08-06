@@ -1,7 +1,8 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.QualityReport;
-import com.xtsh.ragchunk.testutil.TestKnowledgeBaseConfigs;
+import com.xtsh.ragchunk.dto.chunk.QualityReport;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,8 +13,16 @@ class AiChunkTriggerTest {
 
     private final AiChunkTrigger trigger = new AiChunkTrigger();
 
-  private com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig config(String aiMode) {
-        return TestKnowledgeBaseConfigs.minimal(aiMode);
+  private KnowledgeBaseConfig config(String aiMode) {
+        return new KnowledgeBaseConfig(
+                new KnowledgeBaseConfig.ChunkingConfig("hybrid", aiMode),
+                new KnowledgeBaseConfig.RuleConfig(1200, 80, 80, List.of(), List.of(), true),
+                new KnowledgeBaseConfig.QualityConfig(70),
+                new KnowledgeBaseConfig.AiConfig("qwen-plus", 1, 8000, 1),
+                new KnowledgeBaseConfig.EmbeddingConfig("text-embedding-v3"),
+                new KnowledgeBaseConfig.RetrievalConfig(3, 0.5),
+                new QaConfig(1, 0.35, 2, 2, 2, 3, 1, false)
+        );
     }
 
     @Test

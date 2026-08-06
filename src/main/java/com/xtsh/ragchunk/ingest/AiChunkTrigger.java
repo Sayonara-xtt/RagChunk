@@ -1,18 +1,16 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.QualityReport;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import com.xtsh.ragchunk.dto.chunk.QualityReport;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Component;
 
 /**
  * 决定是否调用千问语义重切。判断顺序固定，上传接口的 {@code smartChunk} 仅在其中一步生效。
  */
 @Component
+@Slf4j
 public class AiChunkTrigger {
-
-    private static final Logger log = LoggerFactory.getLogger(AiChunkTrigger.class);
 
     public static final String T0 = "T0";
     public static final String T1 = "T1";

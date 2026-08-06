@@ -1,7 +1,8 @@
 package com.xtsh.ragchunk.ingest;
 
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
-import com.xtsh.ragchunk.testutil.TestKnowledgeBaseConfigs;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,8 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HybridChunkingServiceTest {
 
-    private final com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig CONFIG =
-            TestKnowledgeBaseConfigs.minimal("never");
+    private final KnowledgeBaseConfig CONFIG = new KnowledgeBaseConfig(
+            new KnowledgeBaseConfig.ChunkingConfig("hybrid", "never"),
+            new KnowledgeBaseConfig.RuleConfig(300, 50, 0, List.of("\n\n"), List.of("\n## ", "\n\n"), true),
+            new KnowledgeBaseConfig.QualityConfig(70),
+            new KnowledgeBaseConfig.AiConfig("qwen-plus", 1, 8000, 1),
+            new KnowledgeBaseConfig.EmbeddingConfig("text-embedding-v3"),
+            new KnowledgeBaseConfig.RetrievalConfig(3, 0.5),
+            new QaConfig(1, 0.35, 2, 2, 2, 3, 1, false)
+    );
 
     @Test
     void usesRuleWhenAiNever() {

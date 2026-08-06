@@ -1,8 +1,8 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.QualityReport;
-import com.xtsh.ragchunk.chunk.model.TextChunk;
-import com.xtsh.ragchunk.knowledge.model.KnowledgeBaseConfig;
+import com.xtsh.ragchunk.dto.chunk.QualityReport;
+import com.xtsh.ragchunk.dto.chunk.TextChunk;
+import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.chunk.model.TextChunk;
+import com.xtsh.ragchunk.dto.chunk.TextChunk;
 
 import java.util.List;
 import java.util.stream.Collectors;

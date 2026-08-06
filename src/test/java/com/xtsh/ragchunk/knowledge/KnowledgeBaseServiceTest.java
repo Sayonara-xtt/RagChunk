@@ -1,7 +1,12 @@
 package com.xtsh.ragchunk.knowledge;
 
 import com.xtsh.ragchunk.config.RagChunkProperties;
-import com.xtsh.ragchunk.knowledge.dto.CreateKnowledgeBaseRequest;
+import com.xtsh.ragchunk.dto.knowledge.CreateKnowledgeBaseRequest;
+import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseConfigMerger;
+import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseConfigNormalizer;
+import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseRequestValidator;
+import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseService;
+import com.xtsh.ragchunk.service.knowledge.InMemoryKnowledgeBaseStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +18,13 @@ class KnowledgeBaseServiceTest {
 
     @BeforeEach
     void setUp() {
+        var props = new RagChunkProperties();
         service = new KnowledgeBaseService(
-                new RagChunkProperties(),
+                props,
                 new KnowledgeBaseConfigMerger(),
                 new KnowledgeBaseRequestValidator(),
                 new InMemoryKnowledgeBaseStore(),
-                new KnowledgeBaseConfigNormalizer(new RagChunkProperties())
+                new KnowledgeBaseConfigNormalizer(props)
         );
     }
 

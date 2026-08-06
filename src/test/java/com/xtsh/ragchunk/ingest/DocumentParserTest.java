@@ -1,6 +1,6 @@
 package com.xtsh.ragchunk.ingest;
 
-import com.xtsh.ragchunk.web.BadRequestException;
+import com.xtsh.ragchunk.exception.BadRequestException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

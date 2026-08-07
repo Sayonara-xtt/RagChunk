@@ -1,0 +1,5 @@
+package com.xtsh.ragchunk.exception;
+
+public class NotFoundException extends RuntimeException {
+    public NotFoundException(String message) { super(message); }
+}

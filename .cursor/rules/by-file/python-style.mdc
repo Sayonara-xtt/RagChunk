@@ -1,0 +1,17 @@
+---
+description: Python 语言与脚本规范
+globs: "**/*.{py,toml,ini}"
+alwaysApply: false
+---
+
+# Python（按文件触发）
+
+依据火山引擎 Cursor Rules 文中「Python 开发规范」。
+
+- 遵循 PEP 8；公共 API 使用 type hints
+- 类 PascalCase；函数/变量 snake_case；常量 `UPPER_SNAKE_CASE`
+- 字符串用 f-string；路径优先 `pathlib`
+- 异常要具体，禁止裸 `except:`；用 `logging` 不用 `print`
+- Web 路由薄、业务进 service；与 Java 并存时明确端口与契约
+- 依赖 `requirements.txt` 或 `pyproject.toml`；不混入 Maven
+- 配置走环境变量；HTTP 超时；重试仅限幂等

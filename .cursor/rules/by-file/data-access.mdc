@@ -1,0 +1,23 @@
+---
+description: 数据访问：表设计、SQL、Redis、Flyway
+globs: "**/*.{sql,yml,yaml,xml,properties}"
+alwaysApply: false
+---
+
+
+## 表 / SQL
+
+- 表名/字段：小写 + 下划线；时间字段 `create_time` / `update_time`（或本仓既有命名）
+- 参数绑定；分页必有 limit；禁默认无界全表扫
+- 索引 `idx_`；唯一 `uk_`；逻辑删除字段若存在配合 `@TableLogic`
+- Schema 变更只 **新增** Flyway 版本；禁改已发布脚本
+
+## Redis
+
+- Key：`项目:模块:业务:标识`；必须 TTL
+- 写库后删/更缓存；防穿透（空值/布隆等按需）
+- 分布式锁设过期并校验持有者；不存明文密钥或过大对象
+
+## 性能
+
+- 连接池；避免 N+1；多级缓存按需；耗时操作用异步

@@ -1,0 +1,16 @@
+{
+  "name": "kb-collaborative-progressive",
+  "description": "协作渐进问答：原问先搜，低分再改写",
+  "chunking": { "aiMode": "never" },
+  "retrieval": {
+    "topK": 3,
+    "scoreThreshold": 0.5
+  },
+  "qa": {
+    "scheme": 2,
+    "rewriteMinScore": 0.35,
+    "maxRewriteQueries": 2,
+    "maxLlmCalls": 2,
+    "maxSearchRounds": 2
+  }
+}

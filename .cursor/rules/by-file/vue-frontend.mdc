@@ -1,0 +1,30 @@
+---
+description: Vue 3 + Element Plus + TypeScript 前端框架规范
+globs: "**/*.{vue,ts,tsx,js,jsx,css,scss}"
+alwaysApply: false
+---
+
+# Vue / Element Plus（按框架触发）
+
+依据火山引擎 Cursor Rules 文中「前端开发规范 / Vue 项目结构 / 前端优化」。
+
+## 规范
+
+- 优先 TypeScript；Vue 3 Composition API；新建用 `<script setup>`
+- UI 用 Element Plus，不另引 UI 库（除非用户要求）
+- 组件名 PascalCase；变量/函数 camelCase；常量 `UPPER_SNAKE_CASE`；CSS kebab-case；ES6+
+
+## 结构
+
+```text
+src/
+├── components/  ├── views/  ├── router/  ├── store/
+├── api/         ├── utils/  ├── styles/  └── types/
+```
+
+## 约定
+
+- 请求集中在 `api/`；页面不散落基地址
+- 列表含查询、分页、loading、空态、错误提示
+- 性能：lazy load、防抖节流；大数据考虑虚拟列表
+- 路由/权限跟随现有模式

@@ -1,0 +1,68 @@
+---
+description: Java / Spring Boot / MyBatis-Plus 框架与分层规范
+globs: "**/*.{java,xml}"
+alwaysApply: false
+---
+
+
+## java开发规范
+
+- 遵循阿里巴巴 Java 开发手册规范
+- 使用 Java17 新特性
+- 类 `PascalCase`；方法/变量 `camelCase`；常量 `UPPER_SNAKE_CASE`；包名全小写使用反域名规则
+- Spring：`@RestController` / `@RequestMapping`/ `@Service`/ `@Mapper`，统一构造器方式，禁止 `@Autowired` 字段注入，禁止 `@AllArgsConstructor`做注入 
+- 异常：全局：`@RestControllerAdvice` + `@ExceptionHandler`
+- 校验：`@Valid` + Bean Validation；日志：SLF4J（`@Slf4j`），禁 `System.out`
+- Lombok：Entity/DTO/VO 用 `@Data`；建造 `@Builder`；DI 用 `@RequiredArgsConstructor` + `final`，禁 `@AllArgsConstructor` 做注入
+
+## 分层与目录
+
+```text
+controller → service → serviceImpl → mapper → entity/DB
+```
+
+```text
+src/main/java/.../
+├── controller/   # REST
+├── service/      # 接口
+│   └── <域>/impl/  # *ServiceImpl
+├── mapper/
+├── entity/ dto/ vo/
+├── config/ exception/ util/
+└── integration/  # 外部 API（可选）
+
+src/main/resources/
+├── mapper/xml/
+├── application*.yml|.yaml
+└── static/
+```
+
+| 层 | 必须 | 禁止 |
+|---|---|---|
+| controller | 路由、校验、返回 VO | 业务、事务、直调 Mapper、依赖 Impl |
+| service | 业务接口 | 实现细节 |
+| serviceImpl | 编排、事务、调 Mapper | Servlet；跨域直调对方 Mapper |
+| mapper | `BaseMapper` / XML | 业务规则 |
+| entity | 表映射 | 直接当 API 响应 |
+
+
+## MyBatis-Plus
+
+- `@TableName` / `@TableId` / `@TableField`；逻辑删除 `@TableLogic`；乐观锁按需 `@Version`；时间填充用 `FieldFill` + `MetaObjectHandler`
+- 主键 `IdType` 项目内统一；Mapper：`@Mapper` + `extends BaseMapper`；复杂 SQL → `mapper/xml/`，namespace 对齐
+- 条件优先 `LambdaQueryWrapper` / `Wrappers.lambdaQuery` / `lambdaUpdate`；禁字符串列名
+- 列表必须 `Page`/`IPage` 或有界 `LIMIT`；禁无界 `selectList`；列表用 `.select(...)` 列投影
+- 计数用 `selectCount`；`selectOne` 条件须唯一；部分更新用 `LambdaUpdateWrapper.set`，禁半空实体盲 `updateById`
+- 批量用 `saveBatch` / XML `foreach`，控制单批大小；禁循环单条写
+- `@Transactional` 在 Impl；读 `readOnly=true`；外部 IO 放事务外；SQL 用 `#{}`，禁 `${}` 拼用户输入
+
+## Entity / DTO / VO
+
+- DTO：入参 + `@Valid`；VO：出参按需字段；敏感字段 `@JsonIgnore`
+- 日期按需 `@JsonFormat`；对外不返回 Entity
+
+## API / 事务
+
+- REST：HTTP 动词正确；URL 复数资源名词；标准状态码；分页 `page`/`size`
+- OpenAPI/Swagger 补描述与示例
+- `@Transactional` 标在 Impl；读 `readOnly=true`；外部 HTTP/LLM 放事务外

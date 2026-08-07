@@ -1,0 +1,10 @@
+{
+  "kind": "single",
+  "docId": "doc_f3a8b2c91e04",
+  "batchId": null,
+  "documentIds": ["doc_f3a8b2c91e04"],
+  "status": "QUEUED",
+  "processStage": "QUEUED",
+  "totalCount": null,
+  "message": "accepted; poll GET .../documents/{docId} for progress"
+}

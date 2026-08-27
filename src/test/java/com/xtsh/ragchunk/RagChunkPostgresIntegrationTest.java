@@ -1,5 +1,6 @@
 package com.xtsh.ragchunk;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @ActiveProfiles("test")
 @EnabledIfEnvironmentVariable(named = "RUN_PG_INTEGRATION", matches = "1")
+@Tag("integration")
 class RagChunkPostgresIntegrationTest {
 
     @Container

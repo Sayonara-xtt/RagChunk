@@ -8,10 +8,12 @@ import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseRequestValidator;
 import com.xtsh.ragchunk.service.knowledge.KnowledgeBaseService;
 import com.xtsh.ragchunk.service.knowledge.InMemoryKnowledgeBaseStore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class KnowledgeBaseServiceTest {
 
     private KnowledgeBaseService service;

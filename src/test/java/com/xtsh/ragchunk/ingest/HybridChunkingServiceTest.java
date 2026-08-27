@@ -3,12 +3,14 @@ package com.xtsh.ragchunk.ingest;
 import com.xtsh.ragchunk.integration.dashscope.DashScopeHttpClient;
 import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import com.xtsh.ragchunk.dto.knowledge.QaConfig;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class HybridChunkingServiceTest {
 
     private final KnowledgeBaseConfig CONFIG = new KnowledgeBaseConfig(

@@ -1,11 +1,13 @@
 package com.xtsh.ragchunk.ingest;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class SemanticResplitParseTest {
 
     private final ObjectMapper mapper = new ObjectMapper();

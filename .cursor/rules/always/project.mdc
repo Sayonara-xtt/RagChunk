@@ -1,28 +1,68 @@
 ---
-description: 业务大前提：角色、回复、安全与质量
+description: RagChunk 项目总则：真实技术栈、架构边界、TDD、安全与交付标准
 alwaysApply: true
 ---
 
-## 角色
+## 项目定位与技术栈
 
-你是专业全栈开发助手；只使用本仓约定的可选技术栈，不引入未约定框架
+RagChunk 是 Java 17 + Spring Boot 4 的模块化单体 RAG 服务。
 
-- 后端: Java 17、Spring Boot 4、Maven、MyBatis-Plus
-- 前端: Vue 3、TypeScript/JavaScript、Element Plus
-- 数据库: PostgreSQL、pgvector、Redis、MySQL
-- AI/ML: 大模型、RAG/Agent
+当前技术栈：
 
-## 回答要求
+- 构建：Maven Wrapper；
+- Web：Spring MVC、SpringDoc/OpenAPI；
+- 持久化：PostgreSQL、pgvector、Flyway、MyBatis-Plus、JdbcTemplate；
+- AI：OpenAI 兼容的 DashScope/Ollama 对话与 Embedding；
+- 原件存储：`ObjectStorageService`，当前实现为本地文件；
+- 测试：JUnit、Spring Boot Test、Testcontainers。
 
-- 默认简体中文
-- 先定位根因，再给可运行方案；说清边界与异常
-- 公共 API 用有意义的中文 Javadoc；避免无价值注释
-- 兼顾可维护性、性能与安全
+仓库当前没有 Vue 前端、Redis、MySQL、消息队列或真实 S3 实现。除非用户明确要求并确认影响，不得自行引入新的框架、中间件、数据库或云服务。
 
-## 安全与质量基线
+## 架构边界
 
-- 入参校验；SQL 参数绑定防注入；敏感配置不上库
-- HTTPS/认证按项目现状；CORS 与限流有需要再补
-- 关键逻辑补单测；提交前保证可编译
-- 敏感信息脱敏；遵循 SOLID；提交前格式化
+遵循领域服务 + 端口/适配器结构，不强制创建 `Service`/`ServiceImpl` 对：
 
+```text
+Controller
+  → 应用/领域 Service（knowledge/document/chunk/chat/ingest）
+  → Port（*Store、VectorStore、ObjectStorageService、外部模型边界）
+  → Adapter（MyBatis/Jdbc/InMemory/Local/HTTP）
+```
+
+- Controller 只负责 HTTP 映射、入参校验和 VO 输出，不直接访问 Mapper、Entity 或具体 Adapter。
+- 业务编排放在对应领域 Service；跨领域调用通过公开 Service 或 Port，不直接访问对方 Mapper。
+- `mapper`/`entity` 只服务 PostgreSQL 适配，不向 Controller 泄漏。
+- `integration` 封装远程模型协议、认证、超时和响应解析。
+- 接口用于隔离真实可替换边界；不得为每个类机械创建空接口和 `Impl`。
+
+## 项目不变量
+
+- 知识库配置以创建时持久化的 `config_json` 快照为运行依据；密钥不进入快照。
+- `ragchunk.storage.mode` 与 `ragchunk.storage.vector-store` 的条件 Bean 必须保证每个 Port 恰有一个实现。
+- Embedding 模型输出维度、`ragchunk.embedding.dimensions` 与数据库向量列维度必须一致。
+- 文档状态和 `processStage` 变化必须可追踪；成功和失败终态不能同时出现。
+- 异步、重训和批量行为应考虑幂等、部分失败、重启恢复与并发更新。
+- LLM、Embedding、文件存储和网络都是外部边界；必须设置超时，不在长事务中调用。
+- 已发布 Flyway 迁移不得修改，只能新增后续版本。
+
+## TDD 与验证
+
+所有新增行为和缺陷修复遵循仓库根目录 `AGENTS.md` 与 `docs/TDD工作流.md`：
+
+1. Given / When / Then 定义可观察行为；
+2. 聚焦测试获得有效 RED；
+3. 用最小实现获得 GREEN；
+4. 相关测试全绿后再重构；
+5. 保存真实命令、失败原因和回归证据。
+
+不得删除、跳过或弱化关键测试。现有失败以 `docs/tdd/已知基线.md` 为准，新改动不得增加基线外失败。
+
+## 安全与交付
+
+- 默认简体中文沟通，先说明结果、边界和异常；代码命名保持英文。
+- 用户输入必须校验；SQL 使用参数绑定；文件路径必须规范化并限制在配置根目录。
+- API Key、密码、Token 不写入源码、日志、数据库快照或提交文件；示例只使用无效占位值。
+- 不得静默削弱认证、权限、CORS、限流或数据隔离；相关变化必须明确说明并由用户确认。
+- 日志使用 SLF4J，避免正文、密钥和个人数据的无界输出。
+- 公共契约或复杂行为补充有意义的 Javadoc/OpenAPI；避免复述代码的注释。
+- 完成结论必须有真实编译或测试证据；保留用户已有未提交修改，不扩大变更范围。

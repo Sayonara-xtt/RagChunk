@@ -1,12 +1,12 @@
 ---
-description: Vue 3 + Element Plus + TypeScript 前端框架规范
-globs: "**/*.{vue,ts,tsx,js,jsx,css,scss}"
+description: 可选 frontend 目录的 Vue 3 + Element Plus + TypeScript 规范
+globs: "frontend/**/*.{vue,ts,tsx,js,jsx,css,scss}"
 alwaysApply: false
 ---
 
-# Vue / Element Plus（按框架触发）
+# 可选 Vue 前端
 
-依据火山引擎 Cursor Rules 文中「前端开发规范 / Vue 项目结构 / 前端优化」。
+仓库当前没有前端工程。只有用户明确要求并创建 `frontend/` 后才适用本规则；不得因为本规则存在就自行生成前端、Node 配置或 UI 依赖。
 
 ## 规范
 
@@ -25,6 +25,8 @@ src/
 ## 约定
 
 - 请求集中在 `api/`；页面不散落基地址
+- API 类型和错误结构以 OpenAPI/后端契约为准，不在页面中猜测字段
 - 列表含查询、分页、loading、空态、错误提示
 - 性能：lazy load、防抖节流；大数据考虑虚拟列表
 - 路由/权限跟随现有模式
+- Token 不写入源码或日志；不得绕过后端权限，仅把前端控制作为体验层

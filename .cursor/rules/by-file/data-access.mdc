@@ -1,23 +1,35 @@
 ---
-description: 数据访问：表设计、SQL、Redis、Flyway
-globs: "**/*.{sql,yml,yaml,xml,properties}"
+description: RagChunk PostgreSQL、pgvector、MyBatis XML 与 Flyway 规则
+globs: "src/main/resources/**/*.{sql,xml}"
 alwaysApply: false
 ---
 
+## PostgreSQL 与表设计
 
-## 表 / SQL
+- 当前主库是 PostgreSQL，向量检索优先 pgvector；不得自行增加 MySQL 或 Redis 双写路径。
+- 表名、字段名使用小写下划线；时间字段遵循仓库现有 `created_at`/`updated_at`。
+- 主键、外键、唯一约束和删除行为必须表达业务一致性；索引使用 `idx_` 前缀，唯一约束沿用仓库既有命名。
+- 面向未知数据量的查询必须分页或有界；索引设计应与过滤、排序和向量距离操作符一致。
+- SQL 全部参数绑定；MyBatis 使用 `#{}`，禁止 `${}` 拼接用户输入、列名或排序表达式。
 
-- 表名/字段：小写 + 下划线；时间字段 `create_time` / `update_time`（或本仓既有命名）
-- 参数绑定；分页必有 limit；禁默认无界全表扫
-- 索引 `idx_`；唯一 `uk_`；逻辑删除字段若存在配合 `@TableLogic`
-- Schema 变更只 **新增** Flyway 版本；禁改已发布脚本
+## Flyway
 
-## Redis
+- 已发布迁移脚本视为不可变，只能新增更高版本迁移；修复历史环境使用新迁移或明确的 repair 流程。
+- `db/migration` 与 `db/migration-local` 的同一业务版本应保持语义一致，差异只用于存储能力兼容。
+- Schema 变化同步检查 Entity、Mapper、DTO/VO、配置快照、测试和文档。
+- 任何向量列变化都必须同时校验 Embedding 维度、索引类型与迁移兼容路径。
+- 破坏性迁移、数据回填和不可逆操作必须先获得用户确认，并提供回滚或备份方案。
 
-- Key：`项目:模块:业务:标识`；必须 TTL
-- 写库后删/更缓存；防穿透（空值/布隆等按需）
-- 分布式锁设过期并校验持有者；不存明文密钥或过大对象
+## pgvector 与 Chunk
 
-## 性能
+- 使用余弦相似度时，写入、查询和索引必须采用一致的距离语义。
+- 向量维度不能只在 Java 或 YAML 单侧修改；数据库 `vector(N)`、运行配置和模型输出必须同步。
+- Chunk 写入应支持幂等键；重训或失败清理不得暴露长期的半成品索引状态。
+- 批量写入优先批处理；若 Embedding 只能逐条产生，数据库写入仍应控制事务大小和失败清理策略。
 
-- 连接池；避免 N+1；多级缓存按需；耗时操作用异步
+## MyBatis XML
+
+- namespace、方法签名和结果映射必须与 Mapper 对齐。
+- 复杂查询显式列出需要的字段，不使用无边界 `SELECT *`。
+- 动态排序和字段选择使用应用侧白名单，不能直接接受用户字符串。
+- Mapper 只表达数据访问，不承载切片、问答、状态机等领域规则。

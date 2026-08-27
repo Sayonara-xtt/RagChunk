@@ -1,12 +1,14 @@
 package com.xtsh.ragchunk.ingest;
 
 import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class RuleChunkerTest {
 
     private final KnowledgeBaseConfig.RuleConfig RULE = new KnowledgeBaseConfig.RuleConfig(

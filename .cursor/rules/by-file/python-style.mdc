@@ -1,17 +1,17 @@
 ---
-description: Python 语言与脚本规范
-globs: "**/*.{py,toml,ini}"
+description: RagChunk scripts 目录中的 Python 辅助脚本规范
+globs: "scripts/**/*.py"
 alwaysApply: false
 ---
 
-# Python（按文件触发）
-
-依据火山引擎 Cursor Rules 文中「Python 开发规范」。
+# Python 辅助脚本
 
 - 遵循 PEP 8；公共 API 使用 type hints
 - 类 PascalCase；函数/变量 snake_case；常量 `UPPER_SNAKE_CASE`
 - 字符串用 f-string；路径优先 `pathlib`
 - 异常要具体，禁止裸 `except:`；用 `logging` 不用 `print`
-- Web 路由薄、业务进 service；与 Java 并存时明确端口与契约
-- 依赖 `requirements.txt` 或 `pyproject.toml`；不混入 Maven
-- 配置走环境变量；HTTP 超时；重试仅限幂等
+- Python 只用于开发、迁移或检查脚本，不复制 Java 服务的在线业务逻辑
+- 不把 Python 依赖混入 Maven；新增第三方包时使用独立 `requirements.txt` 或 `pyproject.toml` 并说明用途
+- 路径必须限制在用户指定目录或仓库内；覆盖、移动、递归删除前解析并校验绝对路径
+- 配置使用环境变量或显式参数，不硬编码密钥；HTTP 必须设置超时，重试仅用于幂等操作
+- 脚本应支持非交互执行，失败返回非零退出码；关键转换先提供 dry-run 或备份策略

@@ -1,5 +1,6 @@
 package com.xtsh.ragchunk;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIfEnvironmentVariable(named = "RUN_DB_TEST", matches = "1")
 @SpringBootTest
 @ActiveProfiles("local")
+@Tag("integration")
 class DatabaseConnectionTest {
 
     @Autowired

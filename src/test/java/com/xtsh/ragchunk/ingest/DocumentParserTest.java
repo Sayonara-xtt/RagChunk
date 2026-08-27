@@ -4,6 +4,7 @@ import com.xtsh.ragchunk.exception.BadRequestException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -11,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class DocumentParserTest {
 
     private final DocumentParser parser = new DocumentParser();

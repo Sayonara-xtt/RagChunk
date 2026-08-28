@@ -2,7 +2,7 @@
 
 基于 **Spring Boot 4** 的 RAG 知识库服务：创建库 → 上传文档 → **混合切片**（规则 + 千问/Ollama 按需）→ 向量入库 → 检索问答。
 
-> **⚠️ 状态说明**：核心功能 **已实现** 且 **接口曾联调通过**；解析/切片/AI/问答的 **业务正确性尚未验收**，仅供开发联调。详见 [docs/开发进度.md](docs/开发进度.md)。
+> **⚠️ 状态说明**：核心功能 **已实现** 且 **接口曾联调通过**；解析/切片/AI/问答的 **业务正确性尚未验收**，仅供开发联调。详见 [docs/project/开发进度.md](docs/project/开发进度.md)。
 
 | 项 | 说明 |
 |----|------|
@@ -11,10 +11,10 @@
 | **交付状态** | **开发完成 · 测试不充分 · 正确性未保证** |
 | 支持格式 | `txt` / `md` / `docx` / `xlsx` / `xls`（**PDF 未实现**） |
 | **文档索引** | [docs/README.md](docs/README.md) |
-| **开发进度** | [docs/开发进度.md](docs/开发进度.md) |
-| **创建库参数** | [docs/创建知识库接口参数.md](docs/创建知识库接口参数.md) |
-| **智能问答** | [docs/智能问答方案.md](docs/智能问答方案.md) |
-| **异步上传** | [docs/异步上传与OSS.md](docs/异步上传与OSS.md) |
+| **开发进度** | [docs/project/开发进度.md](docs/project/开发进度.md) |
+| **创建库参数** | [docs/api/创建知识库接口参数.md](docs/api/创建知识库接口参数.md) |
+| **智能问答** | [docs/features/智能问答方案.md](docs/features/智能问答方案.md) |
+| **异步上传** | [docs/features/异步上传与OSS.md](docs/features/异步上传与OSS.md) |
 
 ---
 
@@ -66,7 +66,7 @@ POST 创建知识库 → POST 上传文档 → GET 切片 / POST 问答
 | Swagger UI | http://localhost:8080/swagger-ui/index.html |
 | OpenAPI JSON | http://localhost:8080/v3/api-docs |
 
-> Knife4j 4.5 与 SpringDoc 3 / Boot 4 不兼容，已改用 SpringDoc 官方 UI。说明见 [docs/开发进度.md](docs/开发进度.md) §11.3。
+> Knife4j 4.5 与 SpringDoc 3 / Boot 4 不兼容，已改用 SpringDoc 官方 UI。说明见 [docs/project/开发进度.md](docs/project/开发进度.md) §11.3。
 
 上传链路日志前缀：**`[文档上传]`**；问答链路：**`[智能问答]`**。
 
@@ -91,7 +91,7 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/v1/knowledge-base
   -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
 ```
 
-详见 **[docs/智能问答方案.md](docs/智能问答方案.md)**。
+详见 **[docs/features/智能问答方案.md](docs/features/智能问答方案.md)**。
 
 ---
 
@@ -145,7 +145,7 @@ do {
 if ($doc.status -eq "FAILED") { throw $doc.errorMessage }
 ```
 
-上传流程说明见 **[docs/异步上传与OSS.md](docs/异步上传与OSS.md)**。
+上传流程说明见 **[docs/features/异步上传与OSS.md](docs/features/异步上传与OSS.md)**。
 
 **问答**
 
@@ -272,11 +272,11 @@ flowchart TD
 | 切片 | 规则 + T2/T4/T8 + `SEMANTIC_RESPLIT` | 父子模式、T3/T5/T6/T7 |
 | 入库 | Embedding + pgvector | 经济索引、关键词倒排 |
 
-文档处理：`POST` 返回 **202** → 轮询 `processStage`（`QUEUED` → … → `SUCCESS` / `FAILED`）。详见 [异步上传与OSS.md](docs/异步上传与OSS.md)。
+文档处理：`POST` 返回 **202** → 轮询 `processStage`（`QUEUED` → … → `SUCCESS` / `FAILED`）。详见 [异步上传与OSS.md](docs/features/异步上传与OSS.md)。
 
 ### 在线问答
 
-默认 **纯应用流水线**：应用负责向量检索，LLM 仅生成答案。其它编排见 [智能问答方案](#智能问答方案) 与 [docs/智能问答方案.md](docs/智能问答方案.md)。
+默认 **纯应用流水线**：应用负责向量检索，LLM 仅生成答案。其它编排见 [智能问答方案](#智能问答方案) 与 [docs/features/智能问答方案.md](docs/features/智能问答方案.md)。
 
 ```mermaid
 sequenceDiagram
@@ -301,7 +301,7 @@ sequenceDiagram
 | 分段模式 | 当前仅 **通用** 单层 Chunk（父子模式未实现） |
 | 有据作答 | 无命中时应说明「未找到」，避免编造 |
 
-功能状态总览见 [docs/开发进度.md](docs/开发进度.md) §3。
+功能状态总览见 [docs/project/开发进度.md](docs/project/开发进度.md) §3。
 
 ---
 
@@ -342,7 +342,7 @@ quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_do
 
 **AI 输出**：JSON `{"chunks":[{"text":"..."}]}`；校验 V1 段长、V2 覆盖率≥95%、V4 JSON 合法；失败重试 1 次后 `ai_fallback=true`。
 
-触发规则见上文；详见 [docs/开发进度.md](docs/开发进度.md) §5。
+触发规则见上文；详见 [docs/project/开发进度.md](docs/project/开发进度.md) §5。
 
 ---
 
@@ -372,7 +372,7 @@ quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_do
 | `topK` | 3 | 最多送入 LLM 的 Chunk 数 |
 | `scoreThreshold` | 0.5 | 低于阈值的片段丢弃 |
 
-调参速查：答非所问 → 提高阈值、减小 TopK；总说找不到 → 降低阈值或补文档。字段说明见 [docs/创建知识库接口参数.md](docs/创建知识库接口参数.md)。
+调参速查：答非所问 → 提高阈值、减小 TopK；总说找不到 → 降低阈值或补文档。字段说明见 [docs/api/创建知识库接口参数.md](docs/api/创建知识库接口参数.md)。
 
 ---
 
@@ -383,7 +383,7 @@ quality_score = 100 - short_ratio*40 - weak_boundary_ratio*50 - (single_chunk_do
 | 引擎 | PostgreSQL 16+ |
 | 扩展 | pgvector |
 | Schema | Flyway `src/main/resources/db/migration` |
-| ORM | MyBatis Plus（`knowledge_base`、`document`）+ JdbcTemplate（`chunk` 向量） |
+| 数据访问 | MyBatis Plus（标准 CRUD）+ MyBatis XML（`chunk` 向量 SQL）+ TypeHandler（JSONB/pgvector/real[]） |
 | 向量维度 | 1024（与 `text-embedding-v3` 一致） |
 
 ### 表关系
@@ -417,7 +417,7 @@ SELECT tablename FROM pg_tables WHERE schemaname = 'public';
 SELECT * FROM flyway_schema_history;
 ```
 
-表结构与数据保存见 [docs/开发进度.md](docs/开发进度.md) §9。
+表结构与数据保存见 [docs/project/开发进度.md](docs/project/开发进度.md) §9。
 
 ### Docker PostgreSQL（可选）
 
@@ -451,7 +451,7 @@ $env:RUN_PG_INTEGRATION = "1"
 .\mvnw.cmd test -Dtest=RagChunkPostgresIntegrationTest
 ```
 
-联调清单与 Scalar 调试见 [docs/开发进度.md](docs/开发进度.md) §11。
+联调清单与 Scalar 调试见 [docs/project/开发进度.md](docs/project/开发进度.md) §11。
 
 ---
 
@@ -504,7 +504,8 @@ src/main/java/com/xtsh/ragchunk/
 ├── embedding/       # DashScope / Ollama / 本地 hash
 ├── document/        # 流式上传、异步入库、看板
 ├── storage/         # 原件 putStream / openStream
-├── vector/          # PgVectorStore、内存 VectorStore
+├── vector/          # PgVectorStore、数组/内存 VectorStore（无内联 SQL）
+├── mapper/          # MyBatis Mapper、向量数据库投影与 TypeHandler
 ├── chat/            # ChatOrchestrator、检索/改写/生成、Agent tool
 ├── integration/     # DashScope / OpenAI 兼容 HTTP（含 tools）
 └── config/          # MyBatis、Swagger、存储模式
@@ -514,7 +515,7 @@ src/main/java/com/xtsh/ragchunk/
 
 ## 功能状态
 
-完整清单见 **[docs/开发进度.md](docs/开发进度.md) §3**。摘要：
+完整清单见 **[docs/project/开发进度.md](docs/project/开发进度.md) §3**。摘要：
 
 | 分类 | 示例 |
 |------|------|

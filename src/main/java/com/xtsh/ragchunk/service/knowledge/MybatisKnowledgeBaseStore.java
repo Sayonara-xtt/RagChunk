@@ -28,9 +28,9 @@ public class MybatisKnowledgeBaseStore implements KnowledgeBaseStore {
         KnowledgeBaseEntity existing = knowledgeBaseMapper.selectById(kb.getId());
         KnowledgeBaseEntity entity = mapper.toEntity(kb, existing);
         if (existing == null) {
-            knowledgeBaseMapper.insertRow(entity);
+            knowledgeBaseMapper.insert(entity);
         } else {
-            knowledgeBaseMapper.updateRow(entity);
+            knowledgeBaseMapper.updateById(entity);
         }
         return mapper.toDomain(entity);
     }

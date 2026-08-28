@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.xtsh.ragchunk.persistence.mapper")
+@MapperScan("com.xtsh.ragchunk.mapper")
 @ConditionalOnProperty(name = "ragchunk.storage.mode", havingValue = "postgres", matchIfMissing = true)
 public class MybatisConfig {
 }

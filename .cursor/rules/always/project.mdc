@@ -11,7 +11,7 @@ RagChunk 是 Java 17 + Spring Boot 4 的模块化单体 RAG 服务。
 
 - 构建：Maven Wrapper；
 - Web：Spring MVC、SpringDoc/OpenAPI；
-- 持久化：PostgreSQL、pgvector、Flyway、MyBatis-Plus、JdbcTemplate；
+- 持久化：PostgreSQL、pgvector、Flyway、MyBatis-Plus、MyBatis XML 与 TypeHandler；
 - AI：OpenAI 兼容的 DashScope/Ollama 对话与 Embedding；
 - 原件存储：`ObjectStorageService`，当前实现为本地文件；
 - 测试：JUnit、Spring Boot Test、Testcontainers。
@@ -47,13 +47,21 @@ Controller
 
 ## TDD 与验证
 
-所有新增行为和缺陷修复遵循仓库根目录 `AGENTS.md` 与 `docs/TDD工作流.md`：
+所有版本开发和缺陷修复遵循仓库根目录 `AGENTS.md` 与 `docs/tdd/TDD工作流.md`。开始编码前必须完成：
+
+1. 需求单通过门禁 A；
+2. 详细设计与测试用例设计通过门禁 B；
+3. 三份文档具备状态、风险等级、审核记录和 `REQ → DES → TEST` 追踪关系。
+
+开发者未明确批准门禁 B 时，不得新增测试代码或修改生产代码。获准实施后：
 
 1. Given / When / Then 定义可观察行为；
 2. 聚焦测试获得有效 RED；
 3. 用最小实现获得 GREEN；
 4. 相关测试全绿后再重构；
 5. 保存真实命令、失败原因和回归证据。
+
+版本结束后更新实施与验收报告，停止并等待下一个版本指令。审核后的范围发生变化时，先更新文档并重新审核，不得在代码中静默扩展。
 
 不得删除、跳过或弱化关键测试。现有失败以 `docs/tdd/已知基线.md` 为准，新改动不得增加基线外失败。
 

@@ -6,10 +6,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xtsh.ragchunk.mapper.typehandler.JsonbStringTypeHandler;
 
 import java.time.Instant;
 
-@TableName("knowledge_base")
+@TableName(value = "knowledge_base", autoResultMap = true)
 @Data
 
 public class KnowledgeBaseEntity {
@@ -23,7 +24,7 @@ public class KnowledgeBaseEntity {
 
     private String status;
 
-    @TableField("config_json")
+    @TableField(value = "config_json", typeHandler = JsonbStringTypeHandler.class)
     private String configJson;
 
     @TableField("embedding_model")

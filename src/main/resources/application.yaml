@@ -44,7 +44,7 @@ spring:
       enabled: true
       force: true
 
-# MyBatis Plus：知识库/文档元数据；chunk 向量仍走 JdbcTemplate
+# MyBatis Plus：知识库/文档元数据与 chunk 向量持久化
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

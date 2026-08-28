@@ -1,0 +1,76 @@
+TDD phase : GREEN
+Test mode : focus
+Command   : .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository -Dtest=VectorStorePersistenceBoundaryTest test
+Started   : 2026-08-28T08:58:32.5244534+08:00
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< com.xtsh:RagChunk >--------------------------
+[INFO] Building RagChunk 0.8.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ RagChunk ---
+[INFO] Copying 7 resources from src\main\resources to target\classes
+[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ RagChunk ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 115 source files with javac [debug parameters release 17] to target\classes
+[INFO] ��������·���з�����һ�����������������������
+  ��ע������δ�����а�� javac ���ܻ������ע������
+  �������ٰ�����ָ����һ���������� (-processor)��
+  ��ָ��������·�� (--processor-path, --processor-module-path)��
+  ����ʽ��������ע���� (-proc:only, -proc:full)��
+  ��ʹ�� -Xlint:-options ���ش���Ϣ��
+  ��ʹ�� -proc:none ������ע������
+[WARNING] /D:/codework/RagChunk/src/main/java/com/xtsh/ragchunk/config/RagChunkProperties.java:[53,24] δʹ�� @Deprecated ���ѹ�ʱ����Ŀ����ע��
+[WARNING] /D:/codework/RagChunk/src/main/java/com/xtsh/ragchunk/config/WebEncodingConfig.java:[19,17] org.springframework.web.servlet.config.annotation.WebMvcConfigurer �е� extendMessageConverters(java.util.List<org.springframework.http.converter.HttpMessageConverter<?>>) �ѹ�ʱ, �ұ��Ϊ��ɾ��
+[WARNING] /D:/codework/RagChunk/src/main/java/com/xtsh/ragchunk/config/WebEncodingConfig.java:[22,38] org.springframework.http.converter.json �е� org.springframework.http.converter.json.MappingJackson2HttpMessageConverter �ѹ�ʱ, �ұ��Ϊ��ɾ��
+[INFO] /D:/codework/RagChunk/src/main/java/com/xtsh/ragchunk/integration/dashscope/DashScopeHttpClient.java: ĳЩ�����ļ�ʹ�û򸲸����ѹ�ʱ�� API��
+[INFO] /D:/codework/RagChunk/src/main/java/com/xtsh/ragchunk/integration/dashscope/DashScopeHttpClient.java: �й���ϸ��Ϣ, ��ʹ�� -Xlint:deprecation ���±��롣
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ RagChunk ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ RagChunk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 14 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] ��������·���з�����һ�����������������������
+  ��ע������δ�����а�� javac ���ܻ������ע������
+  �������ٰ�����ָ����һ���������� (-processor)��
+  ��ָ��������·�� (--processor-path, --processor-module-path)��
+  ����ʽ��������ע���� (-proc:only, -proc:full)��
+  ��ʹ�� -Xlint:-options ���ش���Ϣ��
+  ��ʹ�� -proc:none ������ע������
+[WARNING] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/persistence/JsonbStringTypeHandlerTest.java:[38,83] ���һ������ʹ���˲�׼ȷ�ı������͵� varargs �����ķ� varargs ����; 
+  ���� varargs ����, Ӧʹ�� java.lang.String
+  ���ڷ� varargs ����, Ӧʹ�� java.lang.String[], ����Ҳ�������ƴ˾���
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: D:\codework\RagChunk\src\test\java\com\xtsh\ragchunk\RagChunkPostgresIntegrationTest.javaʹ�û򸲸����ѹ�ʱ�� API��
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: �й���ϸ��Ϣ, ��ʹ�� -Xlint:deprecation ���±��롣
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ RagChunk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.xtsh.ragchunk.vector.VectorStorePersistenceBoundaryTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\zh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.074 s -- in com.xtsh.ragchunk.vector.VectorStorePersistenceBoundaryTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.946 s
+[INFO] Finished at: 2026-08-28T08:58:49+08:00
+[INFO] ------------------------------------------------------------------------

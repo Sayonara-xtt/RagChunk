@@ -1,0 +1,121 @@
+TDD phase : REGRESSION
+Test mode : focus
+Command   : .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository -Dtest=DatabaseConnectionTest#jsonbAndPgVectorMapperBoundaries test
+Started   : 2026-08-28T09:04:10.6432203+08:00
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< com.xtsh:RagChunk >--------------------------
+[INFO] Building RagChunk 0.8.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ RagChunk ---
+[INFO] Copying 7 resources from src\main\resources to target\classes
+[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ RagChunk ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ RagChunk ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ RagChunk ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] ��������·���з�����һ�����������������������
+  ��ע������δ�����а�� javac ���ܻ������ע������
+  �������ٰ�����ָ����һ���������� (-processor)��
+  ��ָ��������·�� (--processor-path, --processor-module-path)��
+  ����ʽ��������ע���� (-proc:only, -proc:full)��
+  ��ʹ�� -Xlint:-options ���ش���Ϣ��
+  ��ʹ�� -proc:none ������ע������
+[WARNING] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/persistence/JsonbStringTypeHandlerTest.java:[38,83] ���һ������ʹ���˲�׼ȷ�ı������͵� varargs �����ķ� varargs ����; 
+  ���� varargs ����, Ӧʹ�� java.lang.String
+  ���ڷ� varargs ����, Ӧʹ�� java.lang.String[], ����Ҳ�������ƴ˾���
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: D:\codework\RagChunk\src\test\java\com\xtsh\ragchunk\RagChunkPostgresIntegrationTest.javaʹ�û򸲸����ѹ�ʱ�� API��
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: �й���ϸ��Ϣ, ��ʹ�� -Xlint:deprecation ���±��롣
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ RagChunk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.xtsh.ragchunk.DatabaseConnectionTest
+09:04:23.574 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.DatabaseConnectionTest]: DatabaseConnectionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:04:23.732 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.DatabaseConnectionTest
+09:04:23.842 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.DatabaseConnectionTest]: DatabaseConnectionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:04:23.847 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.DatabaseConnectionTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-08-28T09:04:24.378+08:00  INFO 33464 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : Starting DatabaseConnectionTest using Java 21.0.11 with PID 33464 (started by zh in D:\codework\RagChunk)
+2026-08-28T09:04:24.382+08:00  INFO 33464 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : The following 1 profile is active: "local"
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.5.15 
+2026-08-28T09:04:27.832+08:00  INFO 33464 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-28T09:04:28.293+08:00  INFO 33464 --- [RagChunk] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b1d1a5
+2026-08-28T09:04:28.296+08:00  INFO 33464 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-28T09:04:28.375+08:00  INFO 33464 --- [RagChunk] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/ragchunk (PostgreSQL 17.10)
+2026-08-28T09:04:28.457+08:00  INFO 33464 --- [RagChunk] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Repair of failed migration in Schema History table "public"."flyway_schema_history" not necessary. No failed migration detected.
+2026-08-28T09:04:28.488+08:00  INFO 33464 --- [RagChunk] [           main] o.f.core.internal.command.DbRepair       : Successfully repaired schema history table "public"."flyway_schema_history" (execution time 00:00.058s).
+2026-08-28T09:04:28.534+08:00  INFO 33464 --- [RagChunk] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.013s)
+2026-08-28T09:04:28.556+08:00  INFO 33464 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-08-28T09:04:28.563+08:00  INFO 33464 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-28T09:04:30.064+08:00  INFO 33464 --- [RagChunk] [           main] m.e.s.MybatisPlusApplicationContextAware : Register ApplicationContext instances org.springframework.web.context.support.GenericWebApplicationContext@6dbcf214
+2026-08-28T09:04:30.947+08:00  INFO 33464 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : Started DatabaseConnectionTest in 7.019 seconds (process running for 8.908)
+2026-08-28T09:04:30.968+08:00  INFO 33464 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] activeProfiles=local, llmProvider=ollama, llmConfigured=true, baseUrl=http://192.168.14.57:11434/v1, chunkModel=qwen2.5:14b, embeddingRemote=false
+2026-08-28T09:04:30.971+08:00  INFO 33464 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] Ollama ��ַ=http://192.168.14.57:11434/v1 ���� AI ���� ConnectException ��ȷ�ϸõ�ַ�ɷ��ʣ��� curl http://192.168.14.57:11434/api/tags��
+2026-08-28T09:04:30.978+08:00  WARN 33464 --- [RagChunk] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /scalar endpoint is enabled by default. To disable it in production, set the property 'scalar.enabled=false'
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (C:\Users\zh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 9.130 s <<< FAILURE! -- in com.xtsh.ragchunk.DatabaseConnectionTest
+[ERROR] com.xtsh.ragchunk.DatabaseConnectionTest.jsonbAndPgVectorMapperBoundaries -- Time elapsed: 1.388 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <{"strategy":"hybrid"}> but was: <{"strategy": "hybrid"}>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+	at com.xtsh.ragchunk.DatabaseConnectionTest.jsonbAndPgVectorMapperBoundaries(DatabaseConnectionTest.java:79)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DatabaseConnectionTest.jsonbAndPgVectorMapperBoundaries:79 expected: <{"strategy":"hybrid"}> but was: <{"strategy": "hybrid"}>
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19.475 s
+[INFO] Finished at: 2026-08-28T09:04:33+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project RagChunk: There are test failures.
+[ERROR] 
+[ERROR] See D:\codework\RagChunk\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

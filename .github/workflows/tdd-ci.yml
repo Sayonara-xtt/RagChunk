@@ -1,0 +1,60 @@
+name: TDD Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_integration:
+        description: Run the currently non-blocking integration baseline lane
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Unit regression
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Run unit TDD gate
+        shell: pwsh
+        run: .\scripts\tdd-test.ps1 -Mode unit -Phase REGRESSION
+      - name: Upload TDD evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdd-unit-evidence
+          path: docs/tdd/evidence/*.log
+          if-no-files-found: warn
+
+  integration:
+    name: Integration baseline
+    if: github.event_name == 'workflow_dispatch' && inputs.run_integration
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Run integration tests
+        shell: pwsh
+        run: .\scripts\tdd-test.ps1 -Mode integration -Phase REGRESSION
+      - name: Upload integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdd-integration-evidence
+          path: docs/tdd/evidence/*.log
+          if-no-files-found: warn

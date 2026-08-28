@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xtsh.ragchunk.mapper.VectorChunkMapper">
+
+    <resultMap id="pgVectorSearchRow" type="com.xtsh.ragchunk.mapper.VectorChunkRow">
+        <id property="id" column="id"/>
+        <result property="kbId" column="kb_id"/>
+        <result property="docId" column="doc_id"/>
+        <result property="chunkIndex" column="chunk_index"/>
+        <result property="textContent" column="text_content"/>
+        <result property="source" column="source"/>
+        <result property="score" column="score"/>
+    </resultMap>
+
+    <resultMap id="arrayVectorRow" type="com.xtsh.ragchunk.mapper.VectorChunkRow">
+        <id property="id" column="id"/>
+        <result property="kbId" column="kb_id"/>
+        <result property="docId" column="doc_id"/>
+        <result property="chunkIndex" column="chunk_index"/>
+        <result property="textContent" column="text_content"/>
+        <result property="source" column="source"/>
+        <result property="embedding" column="embedding"
+                typeHandler="com.xtsh.ragchunk.mapper.typehandler.RealArrayTypeHandler"/>
+    </resultMap>
+
+    <insert id="upsertPgVector">
+        INSERT INTO chunk (id, kb_id, doc_id, chunk_index, text_content, source, embedding, created_at)
+        VALUES (
+            #{record.chunkId},
+            #{record.kbId},
+            #{record.docId},
+            #{record.chunkIndex},
+            #{record.text},
+            #{record.source},
+            #{record.embedding,typeHandler=com.xtsh.ragchunk.mapper.typehandler.PgVectorTypeHandler},
+            CURRENT_TIMESTAMP
+        )
+        ON CONFLICT (id) DO UPDATE SET
+            text_content = EXCLUDED.text_content,
+            source = EXCLUDED.source,
+            embedding = EXCLUDED.embedding
+    </insert>
+
+    <insert id="upsertArray">
+        INSERT INTO chunk (id, kb_id, doc_id, chunk_index, text_content, source, embedding, created_at)
+        VALUES (
+            #{record.chunkId},
+            #{record.kbId},
+            #{record.docId},
+            #{record.chunkIndex},
+            #{record.text},
+            #{record.source},
+            #{record.embedding,typeHandler=com.xtsh.ragchunk.mapper.typehandler.RealArrayTypeHandler},
+            CURRENT_TIMESTAMP
+        )
+        ON CONFLICT (id) DO UPDATE SET
+            text_content = EXCLUDED.text_content,
+            source = EXCLUDED.source,
+            embedding = EXCLUDED.embedding
+    </insert>
+
+    <delete id="deleteByDocId">
+        DELETE FROM chunk WHERE doc_id = #{docId}
+    </delete>
+
+    <delete id="deleteByKbId">
+        DELETE FROM chunk WHERE kb_id = #{kbId}
+    </delete>
+
+    <select id="searchPgVector" resultMap="pgVectorSearchRow">
+        <![CDATA[
+        SELECT id,
+               kb_id,
+               doc_id,
+               chunk_index,
+               text_content,
+               source,
+               1 - (embedding <=> #{query,typeHandler=com.xtsh.ragchunk.mapper.typehandler.PgVectorTypeHandler}) AS score
+        FROM chunk
+        WHERE kb_id = #{kbId}
+          AND 1 - (embedding <=> #{query,typeHandler=com.xtsh.ragchunk.mapper.typehandler.PgVectorTypeHandler}) >= #{minScore}
+        ORDER BY embedding <=> #{query,typeHandler=com.xtsh.ragchunk.mapper.typehandler.PgVectorTypeHandler}
+        LIMIT #{topK}
+        ]]>
+    </select>
+
+    <select id="findArrayByKbId" resultMap="arrayVectorRow">
+        SELECT id, kb_id, doc_id, chunk_index, text_content, source, embedding
+        FROM chunk
+        WHERE kb_id = #{kbId}
+    </select>
+</mapper>

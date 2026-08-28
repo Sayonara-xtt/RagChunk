@@ -1,0 +1,8 @@
+Behavior: TDD evidence survives Maven clean
+Command 1: .\scripts\tdd-test.ps1 -Mode unit -Phase GREEN
+Evidence: 20260827-174848-GREEN-unit-suite.log
+Command 2: .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository clean
+Exists after clean: True
+SHA256 before clean: 5C8791F60B0219F0F170A4BCA5A9E0CD7205B604EABA74F8C39139A7E6679A88
+SHA256 after clean: 5C8791F60B0219F0F170A4BCA5A9E0CD7205B604EABA74F8C39139A7E6679A88
+Result: GREEN - durable evidence survives Maven clean unchanged

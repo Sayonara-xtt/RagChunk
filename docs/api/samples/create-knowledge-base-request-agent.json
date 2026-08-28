@@ -1,0 +1,17 @@
+{
+  "name": "kb-agent-demo",
+  "description": "Agent 问答：LLM 通过 search_kb 检索",
+  "chunking": { "aiMode": "never" },
+  "retrieval": {
+    "topK": 5,
+    "scoreThreshold": 0.45
+  },
+  "qa": {
+    "scheme": 5,
+    "maxLlmCalls": 3,
+    "maxSearchRounds": 3,
+    "agentMaxIterations": 4,
+    "agentMaxToolCallsPerRound": 1,
+    "agentAllowRelaxThreshold": true
+  }
+}

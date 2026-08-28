@@ -1,0 +1,126 @@
+TDD phase : REGRESSION
+Test mode : integration
+Command   : .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository -Dgroups=integration test
+Started   : 2026-08-28T09:17:24.5941017+08:00
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< com.xtsh:RagChunk >--------------------------
+[INFO] Building RagChunk 0.8.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ RagChunk ---
+[INFO] Copying 7 resources from src\main\resources to target\classes
+[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ RagChunk ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ RagChunk ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ RagChunk ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] ��������·���з�����һ�����������������������
+  ��ע������δ�����а�� javac ���ܻ������ע������
+  �������ٰ�����ָ����һ���������� (-processor)��
+  ��ָ��������·�� (--processor-path, --processor-module-path)��
+  ����ʽ��������ע���� (-proc:only, -proc:full)��
+  ��ʹ�� -Xlint:-options ���ش���Ϣ��
+  ��ʹ�� -proc:none ������ע������
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: D:\codework\RagChunk\src\test\java\com\xtsh\ragchunk\RagChunkPostgresIntegrationTest.javaʹ�û򸲸����ѹ�ʱ�� API��
+[INFO] /D:/codework/RagChunk/src/test/java/com/xtsh/ragchunk/RagChunkPostgresIntegrationTest.java: �й���ϸ��Ϣ, ��ʹ�� -Xlint:deprecation ���±��롣
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ RagChunk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.xtsh.ragchunk.DatabaseConnectionTest
+09:17:36.298 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.DatabaseConnectionTest]: DatabaseConnectionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:17:36.541 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.DatabaseConnectionTest
+09:17:36.658 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.DatabaseConnectionTest]: DatabaseConnectionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:17:36.670 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.DatabaseConnectionTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-08-28T09:17:37.368+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : Starting DatabaseConnectionTest using Java 21.0.11 with PID 37948 (started by zh in D:\codework\RagChunk)
+2026-08-28T09:17:37.371+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : The following 1 profile is active: "local"
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.5.15 
+2026-08-28T09:17:40.108+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-28T09:17:40.393+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@45e69324
+2026-08-28T09:17:40.397+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-28T09:17:40.462+08:00  INFO 37948 --- [RagChunk] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/ragchunk (PostgreSQL 17.10)
+2026-08-28T09:17:40.568+08:00  INFO 37948 --- [RagChunk] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Repair of failed migration in Schema History table "public"."flyway_schema_history" not necessary. No failed migration detected.
+2026-08-28T09:17:40.613+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbRepair       : Successfully repaired schema history table "public"."flyway_schema_history" (execution time 00:00.085s).
+2026-08-28T09:17:40.698+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.017s)
+2026-08-28T09:17:40.729+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-08-28T09:17:40.736+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-28T09:17:42.559+08:00  INFO 37948 --- [RagChunk] [           main] m.e.s.MybatisPlusApplicationContextAware : Register ApplicationContext instances org.springframework.web.context.support.GenericWebApplicationContext@65a48602
+2026-08-28T09:17:43.013+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.DatabaseConnectionTest   : Started DatabaseConnectionTest in 6.233 seconds (process running for 7.854)
+2026-08-28T09:17:43.024+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] activeProfiles=local, llmProvider=ollama, llmConfigured=true, baseUrl=http://192.168.14.57:11434/v1, chunkModel=qwen2.5:14b, embeddingRemote=false
+2026-08-28T09:17:43.026+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] Ollama ��ַ=http://192.168.14.57:11434/v1 ���� AI ���� ConnectException ��ȷ�ϸõ�ַ�ɷ��ʣ��� curl http://192.168.14.57:11434/api/tags��
+2026-08-28T09:17:43.028+08:00  WARN 37948 --- [RagChunk] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /scalar endpoint is enabled by default. To disable it in production, set the property 'scalar.enabled=false'
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\zh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+database=ragchunk, user=postgres, pgvector=true, knowledge_base rows=4
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.038 s -- in com.xtsh.ragchunk.DatabaseConnectionTest
+[INFO] Running com.xtsh.ragchunk.RagChunkApplicationTests
+2026-08-28T09:17:44.063+08:00  INFO 37948 --- [RagChunk] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.xtsh.ragchunk.RagChunkApplicationTests]: RagChunkApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28T09:17:44.071+08:00  INFO 37948 --- [RagChunk] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.RagChunkApplicationTests
+2026-08-28T09:17:44.073+08:00  INFO 37948 --- [RagChunk] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.xtsh.ragchunk.RagChunkApplicationTests]: RagChunkApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28T09:17:44.080+08:00  INFO 37948 --- [RagChunk] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.RagChunkApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-08-28T09:17:44.157+08:00  INFO 37948 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : Starting RagChunkApplicationTests using Java 21.0.11 with PID 37948 (started by zh in D:\codework\RagChunk)
+2026-08-28T09:17:44.157+08:00  INFO 37948 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : The following 1 profile is active: "inmemory"
+2026-08-28T09:17:45.386+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-08-28T09:17:45.547+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@52dc71b2
+2026-08-28T09:17:45.548+08:00  INFO 37948 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-08-28T09:17:45.549+08:00  INFO 37948 --- [RagChunk] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/ragchunk (PostgreSQL 17.10)
+2026-08-28T09:17:45.564+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.005s)
+2026-08-28T09:17:45.617+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-08-28T09:17:45.618+08:00  INFO 37948 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-28T09:17:45.655+08:00  INFO 37948 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : Started RagChunkApplicationTests in 1.556 seconds (process running for 10.495)
+2026-08-28T09:17:45.656+08:00  INFO 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] activeProfiles=inmemory, llmProvider=dashscope, llmConfigured=false, baseUrl=https://dashscope.aliyuncs.com/compatible-mode/v1, chunkModel=qwen-plus, embeddingRemote=true
+2026-08-28T09:17:45.656+08:00  WARN 37948 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] LLM δ���ã�provider=dashscope ��δ���� DASHSCOPE_API_KEY������� profile/local �е� Ollama��provider=ollama��
+2026-08-28T09:17:45.657+08:00  WARN 37948 --- [RagChunk] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /scalar endpoint is enabled by default. To disable it in production, set the property 'scalar.enabled=false'
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.613 s -- in com.xtsh.ragchunk.RagChunkApplicationTests
+[INFO] Running com.xtsh.ragchunk.RagChunkPostgresIntegrationTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0 s -- in com.xtsh.ragchunk.RagChunkPostgresIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  18.901 s
+[INFO] Finished at: 2026-08-28T09:17:46+08:00
+[INFO] ------------------------------------------------------------------------

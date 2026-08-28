@@ -1,0 +1,17 @@
+{
+  "name": "demo-kb-e2e",
+  "description": "接口成果展示样例",
+  "chunking": {
+    "mode": "hybrid",
+    "aiMode": "never"
+  },
+  "rule": {
+    "maxChars": 1200,
+    "minChars": 80,
+    "overlap": 80
+  },
+  "retrieval": {
+    "topK": 3,
+    "scoreThreshold": 0.3
+  }
+}

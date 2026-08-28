@@ -1,0 +1,25 @@
+**********************
+PowerShell transcript start
+Start time: 20260827172232
+Username: DESKTOP-O6F6LP7\CodexSandboxOffline
+RunAs User: DESKTOP-O6F6LP7\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-O6F6LP7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+.\scripts\tdd-test.ps1 -Mode unit -Phase REGRESSION
+Process ID: 5144
+PSVersion: 7.6.4
+PSEdition: Core
+GitCommitId: 7.6.4
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+**********************
+PowerShell transcript end
+End time: 20260827172259
+**********************

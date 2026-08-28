@@ -1,0 +1,160 @@
+TDD phase : REGRESSION
+Test mode : integration
+Command   : .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository -Dgroups=integration test
+Started   : 2026-08-28T09:00:50.6197104+08:00
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< com.xtsh:RagChunk >--------------------------
+[INFO] Building RagChunk 0.8.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ RagChunk ---
+[INFO] Copying 7 resources from src\main\resources to target\classes
+[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ RagChunk ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ RagChunk ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ RagChunk ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ RagChunk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.xtsh.ragchunk.DatabaseConnectionTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.022 s -- in com.xtsh.ragchunk.DatabaseConnectionTest
+[INFO] Running com.xtsh.ragchunk.RagChunkApplicationTests
+09:00:57.954 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.RagChunkApplicationTests]: RagChunkApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:00:58.102 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.RagChunkApplicationTests
+09:00:58.212 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.xtsh.ragchunk.RagChunkApplicationTests]: RagChunkApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:00:58.219 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.xtsh.ragchunk.RagChunkApplication for test class com.xtsh.ragchunk.RagChunkApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-08-28T09:00:58.824+08:00  INFO 33088 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : Starting RagChunkApplicationTests using Java 21.0.11 with PID 33088 (started by zh in D:\codework\RagChunk)
+2026-08-28T09:00:58.826+08:00  INFO 33088 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : The following 1 profile is active: "inmemory"
+2026-08-28T09:01:03.338+08:00  INFO 33088 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-28T09:01:03.788+08:00  INFO 33088 --- [RagChunk] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@24954e82
+2026-08-28T09:01:03.793+08:00  INFO 33088 --- [RagChunk] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-28T09:01:03.860+08:00  INFO 33088 --- [RagChunk] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/ragchunk (PostgreSQL 17.10)
+2026-08-28T09:01:03.981+08:00  INFO 33088 --- [RagChunk] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.045s)
+2026-08-28T09:01:04.070+08:00  INFO 33088 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-08-28T09:01:04.077+08:00  INFO 33088 --- [RagChunk] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-28T09:01:04.302+08:00  INFO 33088 --- [RagChunk] [           main] c.x.ragchunk.RagChunkApplicationTests    : Started RagChunkApplicationTests in 5.987 seconds (process running for 7.393)
+2026-08-28T09:01:04.308+08:00  INFO 33088 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] activeProfiles=inmemory, llmProvider=dashscope, llmConfigured=false, baseUrl=https://dashscope.aliyuncs.com/compatible-mode/v1, chunkModel=qwen-plus, embeddingRemote=true
+2026-08-28T09:01:04.309+08:00  WARN 33088 --- [RagChunk] [           main] c.xtsh.ragchunk.config.LlmStartupLogger  : [����] LLM δ���ã�provider=dashscope ��δ���� DASHSCOPE_API_KEY������� profile/local �е� Ollama��provider=ollama��
+2026-08-28T09:01:04.312+08:00  WARN 33088 --- [RagChunk] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /scalar endpoint is enabled by default. To disable it in production, set the property 'scalar.enabled=false'
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (C:\Users\zh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.461 s -- in com.xtsh.ragchunk.RagChunkApplicationTests
+[INFO] Running com.xtsh.ragchunk.RagChunkPostgresIntegrationTest
+2026-08-28T09:01:05.251+08:00  INFO 33088 --- [RagChunk] [           main] org.testcontainers.images.PullPolicy     : Image pull policy will be performed by: DefaultPullPolicy()
+2026-08-28T09:01:05.253+08:00  INFO 33088 --- [RagChunk] [           main] o.t.utility.ImageNameSubstitutor         : Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2026-08-28T09:01:05.263+08:00  INFO 33088 --- [RagChunk] [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 2.0.5
+2026-08-28T09:01:05.678+08:00  INFO 33088 --- [RagChunk] [           main] .t.d.DockerMachineClientProviderStrategy : docker-machine executable was not found on PATH ([C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell, C:\Users\zh\.codex\tmp\arg0\codex-arg0DPMYyn, C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\override, C:\Program Files\Common Files\Oracle\Java\javapath, C:\Windows\system32, C:\Windows, C:\Windows\System32\Wbem, C:\Windows\System32\WindowsPowerShell\v1.0\, C:\Windows\System32\OpenSSH\, C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common, C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR, C:\WINDOWS\system32, C:\WINDOWS, C:\WINDOWS\System32\Wbem, C:\WINDOWS\System32\WindowsPowerShell\v1.0\, C:\WINDOWS\System32\OpenSSH\, C:\Program Files\Docker\Docker\resources\bin, C:\Program Files\dotnet\, C:\Users\zh\AppData\Local\Programs\Python\Python312\Scripts\, C:\Users\zh\AppData\Local\Programs\Python\Python312\, C:\Users\zh\AppData\Local\Programs\Python\Launcher\, C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell, C:\Users\zh\AppData\Local\Microsoft\WindowsApps, D:\Program Files\JetBrains\IntelliJ IDEA 2026.1.2\bin, D:\AnZhuang\jdk-21.0.11\bin, D:\AnZhuang\jdk-21.0.11\jre\bin, D:\Program Files\Git\bin, D:\Users\zh\AppData\Local\Programs\Microsoft VS Code\bin, D:\Users\zh\AppData\Local\Programs\cursor\resources\app\bin, C:\Users\zh\AppData\Local\Programs\Ollama, D:\AnZhuang\node, C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\fallback, C:\Users\zh\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd, C:\Users\zh\AppData\Local\OpenAI\Codex\bin\54ee14df1f760d5e, C:\Program Files\WindowsApps\OpenAI.Codex_26.818.8289.0_x64__2p2nqsd0c76g0\app\resources])
+2026-08-28T09:01:05.679+08:00 ERROR 33088 --- [RagChunk] [           main] o.t.d.DockerClientProviderStrategy       : Could not find a valid Docker environment. Please check configuration. Attempted configurations were:
+As no valid configuration was found, execution cannot continue.
+See https://java.testcontainers.org/on_failure.html for more details.
+2026-08-28T09:01:05.682+08:00  INFO 33088 --- [RagChunk] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.xtsh.ragchunk.RagChunkPostgresIntegrationTest]: RagChunkPostgresIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28T09:01:05.704+08:00  INFO 33088 --- [RagChunk] [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 2.0.5
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.523 s <<< FAILURE! -- in com.xtsh.ragchunk.RagChunkPostgresIntegrationTest
+[ERROR] com.xtsh.ragchunk.RagChunkPostgresIntegrationTest -- Time elapsed: 0.523 s <<< ERROR!
+java.lang.IllegalStateException: Could not find a valid Docker environment. Please see logs and check configuration
+	at org.testcontainers.dockerclient.DockerClientProviderStrategy.lambda$getFirstValidStrategy$7(DockerClientProviderStrategy.java:274)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at org.testcontainers.dockerclient.DockerClientProviderStrategy.getFirstValidStrategy(DockerClientProviderStrategy.java:265)
+	at org.testcontainers.DockerClientFactory.getOrInitializeStrategy(DockerClientFactory.java:154)
+	at org.testcontainers.DockerClientFactory.client(DockerClientFactory.java:196)
+	at org.testcontainers.DockerClientFactory$1.getDockerClient(DockerClientFactory.java:108)
+	at com.github.dockerjava.api.DockerClientDelegate.authConfig(DockerClientDelegate.java:111)
+	at org.testcontainers.containers.GenericContainer.start(GenericContainer.java:316)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension$StoreAdapter.start(TestcontainersExtension.java:276)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension$StoreAdapter.access$200(TestcontainersExtension.java:263)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension.lambda$startContainers$4(TestcontainersExtension.java:83)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension.lambda$startContainers$5(TestcontainersExtension.java:83)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension.startContainers(TestcontainersExtension.java:83)
+	at org.testcontainers.junit.jupiter.TestcontainersExtension.beforeAll(TestcontainersExtension.java:57)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	Suppressed: org.testcontainers.containers.ContainerFetchException: Can't get Docker image: RemoteDockerImage(imageName=pgvector/pgvector:pg16, imagePullPolicy=DefaultPullPolicy(), imageNameSubstitutor=org.testcontainers.utility.ImageNameSubstitutor$LogWrappedImageNameSubstitutor@438a65a7)
+		at org.testcontainers.containers.GenericContainer.getDockerImageName(GenericContainer.java:1308)
+		at org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizerFactory.createSource(ServiceConnectionContextCustomizerFactory.java:90)
+		at org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizerFactory.lambda$collectSources$1(ServiceConnectionContextCustomizerFactory.java:65)
+		at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:591)
+		at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:558)
+		at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:332)
+		at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+		at org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizerFactory.lambda$collectSources$0(ServiceConnectionContextCustomizerFactory.java:65)
+		at org.springframework.util.ReflectionUtils.doWithLocalFields(ReflectionUtils.java:691)
+		at org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizerFactory.collectSources(ServiceConnectionContextCustomizerFactory.java:62)
+		at org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizerFactory.createContextCustomizer(ServiceConnectionContextCustomizerFactory.java:54)
+		at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:420)
+		at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:393)
+		at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:268)
+		at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:226)
+		at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:117)
+		at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:102)
+		at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:142)
+		at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:126)
+		at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+		at org.springframework.test.context.junit.jupiter.SpringExtension.getTestContextManager(SpringExtension.java:466)
+		at org.springframework.test.context.junit.jupiter.SpringExtension.afterAll(SpringExtension.java:220)
+		... 1 more
+	Caused by: java.lang.IllegalStateException: Previous attempts to find a Docker environment failed. Will not retry. Please see logs and check configuration
+		at org.testcontainers.dockerclient.DockerClientProviderStrategy.getFirstValidStrategy(DockerClientProviderStrategy.java:229)
+		at org.testcontainers.DockerClientFactory.getOrInitializeStrategy(DockerClientFactory.java:154)
+		at org.testcontainers.DockerClientFactory.client(DockerClientFactory.java:196)
+		at org.testcontainers.images.LocalImagesCache.get(LocalImagesCache.java:31)
+		at org.testcontainers.images.AbstractImagePullPolicy.shouldPull(AbstractImagePullPolicy.java:18)
+		at org.testcontainers.images.RemoteDockerImage.resolve(RemoteDockerImage.java:79)
+		at org.testcontainers.images.RemoteDockerImage.resolve(RemoteDockerImage.java:35)
+		at org.testcontainers.utility.LazyFuture.getResolvedValue(LazyFuture.java:20)
+		at org.testcontainers.utility.LazyFuture.get(LazyFuture.java:41)
+		at org.testcontainers.containers.GenericContainer.getDockerImageName(GenericContainer.java:1306)
+		... 22 more
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   RagChunkPostgresIntegrationTest ? IllegalState Could not find a valid Docker environment. Please see logs and check configuration
+[INFO] 
+[ERROR] Tests run: 3, Failures: 0, Errors: 1, Skipped: 1
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.845 s
+[INFO] Finished at: 2026-08-28T09:01:06+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project RagChunk: 
+[ERROR] 
+[ERROR] See D:\codework\RagChunk\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

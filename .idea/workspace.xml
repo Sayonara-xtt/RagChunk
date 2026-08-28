@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="80dcd328-b573-402e-b4e4-11738807fae8" name="更改" comment="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发">
+      <change beforePath="$PROJECT_DIR$/docs/archive/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/archive/architecture.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/archive/chunking.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/archive/database.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="219" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Sayonara-xtt&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Sayonara-xtt/RagChunk.git&quot;,
+    &quot;accountId&quot;: &quot;45131ec1-8cd6-4d41-9e94-654d34a18f26&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/resources/application.yaml" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0009175026848338" />
+      <entry key="MS500" value="1.249125228094035" />
+      <entry key="S2" value="1.9448345519111743" />
+      <entry key="S5" value="2.813692006161264" />
+      <entry key="S10" value="4.038242644924583" />
+      <entry key="S30" value="6.960962213547828" />
+      <entry key="S60" value="8.585878298658656" />
+      <entry key="M2" value="9.670447944435477" />
+      <entry key="M5" value="10.43500066817049" />
+      <entry key="M10" value="10.711618751727451" />
+      <entry key="M15" value="10.806411310107755" />
+      <entry key="M30" value="10.902531377580607" />
+      <entry key="H1" value="10.952101930007368" />
+      <entry key="H2" value="11.365746641271267" />
+      <entry key="H4" value="18.863947512804316" />
+      <entry key="D1" value="121.05775531924488" />
+      <entry key="W1" value="191.9172403239087" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9403967971348918" />
+      <entry key="MS500" value="1.2343202552566792" />
+      <entry key="S2" value="1.9394284270644453" />
+      <entry key="S5" value="2.8106643605201778" />
+      <entry key="S10" value="4.036085937493866" />
+      <entry key="S30" value="6.959708190749898" />
+      <entry key="S60" value="8.585099857745588" />
+      <entry key="M2" value="9.670007915498942" />
+      <entry key="M5" value="10.434810290174878" />
+      <entry key="M10" value="10.711520960307597" />
+      <entry key="M15" value="10.80634552102236" />
+      <entry key="M30" value="10.902498181402564" />
+      <entry key="H1" value="10.952085253704217" />
+      <entry key="H2" value="11.365737899437635" />
+      <entry key="H4" value="18.863939377897367" />
+      <entry key="D1" value="121.05774385732222" />
+      <entry key="W1" value="191.9172375227388" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3E24RC3KYFZZgeFYUjmAyO4gXOA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="sortByType" value="true" />
+    <option name="sortKey" value="BY_TYPE" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.RagChunk [clean].executor": "Run",
+    "Maven.RagChunk [compile].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "发现新的/更新的数据库配置",
+    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.RagChunkApplication.executor": "Debug",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "dev-zh",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2321839",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration name="RagChunkApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="RagChunk" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xtsh.ragchunk.RagChunkApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpringProfilesService">
+    <option name="activeProfiles">
+      <map>
+        <entry key="RagChunk" value="application.yaml" />
+      </map>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="80dcd328-b573-402e-b4e4-11738807fae8" name="更改" comment="RAG 知识库服务初始化 一期：创建库 → 上传文档 → 混合切片（规则 + 千问/Ollama 按需）→ 向量入库 → 检索问答" />
+      <created>1779363321230</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779363321230</updated>
+      <workItem from="1779363324153" duration="828000" />
+      <workItem from="1779411834904" duration="3118000" />
+      <workItem from="1779444759789" duration="105000" />
+      <workItem from="1779865999204" duration="462000" />
+      <workItem from="1779870608745" duration="1261000" />
+      <workItem from="1780045256521" duration="576000" />
+      <workItem from="1780045891742" duration="498000" />
+      <workItem from="1785741302390" duration="1305000" />
+      <workItem from="1785743457192" duration="7039000" />
+      <workItem from="1785978325127" duration="1009000" />
+      <workItem from="1785979966398" duration="2571000" />
+      <workItem from="1785985015655" duration="684000" />
+      <workItem from="1785986748054" duration="25675000" />
+      <workItem from="1786589458535" duration="97000" />
+      <workItem from="1787808736247" duration="206000" />
+      <workItem from="1787808961392" duration="5157000" />
+      <workItem from="1787821949700" duration="15415000" />
+    </task>
+    <task id="LOCAL-00001" summary="RAG知识库服务项目初始化">
+      <option name="closed" value="true" />
+      <created>1779416499019</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1779416499019</updated>
+    </task>
+    <task id="LOCAL-00002" summary="智能问答功能点初始化">
+      <option name="closed" value="true" />
+      <created>1779444852223</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1779444852224</updated>
+    </task>
+    <task id="LOCAL-00003" summary="1 修改文件分层目录 2 定义cursor项目全局类规则和触发类规则">
+      <option name="closed" value="true" />
+      <created>1786015529799</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1786015529799</updated>
+    </task>
+    <task id="LOCAL-00004" summary="1 修改文件分层目录 2 定义cursor项目全局类规则和触发类规则">
+      <option name="closed" value="true" />
+      <created>1786015766718</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1786015766719</updated>
+    </task>
+    <task id="LOCAL-00005" summary="1 更新项目全局规则 2 推送之前未维护的文件">
+      <option name="closed" value="true" />
+      <created>1786072759540</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1786072759540</updated>
+    </task>
+    <task id="LOCAL-00006" summary="1 新增TDD workflows 测试驱动流程 2 整理项目框架">
+      <option name="closed" value="true" />
+      <created>1787822107739</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1787822107740</updated>
+    </task>
+    <task id="LOCAL-00007" summary="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发">
+      <option name="closed" value="true" />
+      <created>1787882294563</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1787882294563</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/dev-zh" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/dev-zh" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="RAG知识库服务项目初始化" />
+    <MESSAGE value="智能问答功能点初始化" />
+    <MESSAGE value="1 修改文件分层目录 2 定义cursor项目全局类规则和触发类规则" />
+    <MESSAGE value="1 更新项目全局规则 2 推送之前未维护的文件" />
+    <MESSAGE value="1 新增TDD workflows 测试驱动流程 2 整理项目框架" />
+    <MESSAGE value="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

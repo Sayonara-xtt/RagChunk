@@ -1,0 +1,6 @@
+Behavior: TDD evidence survives Maven clean
+Command: .\mvnw.cmd -Dmaven.repo.local=C:\Users\zh\.m2\repository clean
+Old path: target/tdd-evidence/clean-survival-probe.log
+Probe existed before clean: True
+Probe exists after clean: False
+Result: RED - old target-based evidence is deleted by Maven clean

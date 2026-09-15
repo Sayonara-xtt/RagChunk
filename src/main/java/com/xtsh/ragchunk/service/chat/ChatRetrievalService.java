@@ -7,6 +7,7 @@ import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import com.xtsh.ragchunk.vector.ScoredChunk;
 import com.xtsh.ragchunk.vector.VectorStore;
+import com.xtsh.ragchunk.service.chat.trace.ChatExecutionContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,6 +33,13 @@ public class ChatRetrievalService {
      */
     public List<ScoredChunk> search(String kbId, String query, KnowledgeBaseConfig config, boolean relaxThreshold)
             throws Exception {
+        return search(null, kbId, query, config, relaxThreshold);
+    }
+
+    public List<ScoredChunk> search(
+            ChatExecutionContext context, String kbId, String query,
+            KnowledgeBaseConfig config, boolean relaxThreshold) throws Exception {
+        long startedNanos = System.nanoTime();
         var retrieval = config.retrieval();
         double threshold = retrieval.scoreThreshold();
         if (relaxThreshold) {
@@ -40,6 +48,11 @@ public class ChatRetrievalService {
         int topK = retrieval.topK();
         float[] vec = embeddingService.embed(query, config.embedding());
         List<ScoredChunk> hits = vectorStore.search(kbId, vec, topK, threshold);
+        if (context != null) {
+            context.collector().recordRound(
+                    query, topK, threshold, relaxThreshold,
+                    (System.nanoTime() - startedNanos) / 1_000_000, hits);
+        }
         log.info("[智能问答] 向量检索 kbId={}, queryLen={}, topK={}, threshold={}, relax={}, 命中={}, maxScore={}",
                 kbId, query != null ? query.length() : 0, topK, threshold, relaxThreshold,
                 hits.size(), maxScore(hits));
@@ -51,6 +64,13 @@ public class ChatRetrievalService {
      */
     public List<ScoredChunk> searchWithParams(String kbId, com.xtsh.ragchunk.dto.chat.KbSearchParams params,
                                               KnowledgeBaseConfig config, QaConfig qa) throws Exception {
+        return searchWithParams(null, kbId, params, config, qa);
+    }
+
+    public List<ScoredChunk> searchWithParams(
+            ChatExecutionContext context, String kbId, com.xtsh.ragchunk.dto.chat.KbSearchParams params,
+            KnowledgeBaseConfig config, QaConfig qa) throws Exception {
+        long startedNanos = System.nanoTime();
         var retrieval = config.retrieval();
         int topK = params.topK() != null ? Math.min(params.topK(), 10) : retrieval.topK();
         double threshold = params.scoreThreshold() != null
@@ -61,6 +81,11 @@ public class ChatRetrievalService {
         }
         float[] vec = embeddingService.embed(params.query(), config.embedding());
         List<ScoredChunk> hits = vectorStore.search(kbId, vec, topK, threshold);
+        if (context != null) {
+            context.collector().recordRound(
+                    params.query(), topK, threshold, params.relaxThreshold(),
+                    (System.nanoTime() - startedNanos) / 1_000_000, hits);
+        }
         log.info("[智能问答] tool检索 kbId={}, queryLen={}, topK={}, threshold={}, 命中={}, maxScore={}",
                 kbId, params.query().length(), topK, threshold, hits.size(), maxScore(hits));
         return hits;
@@ -109,10 +134,17 @@ public class ChatRetrievalService {
                                                             KnowledgeBaseConfig config,
                                                             ChatRetrievalService retrieval,
                                                             boolean relax) throws Exception {
+        return roundsFromQueries(null, kbId, queries, config, retrieval, relax);
+    }
+
+    public static List<List<ScoredChunk>> roundsFromQueries(
+            ChatExecutionContext context, String kbId, List<String> queries,
+            KnowledgeBaseConfig config, ChatRetrievalService retrieval,
+            boolean relax) throws Exception {
         List<List<ScoredChunk>> rounds = new ArrayList<>();
         for (String q : queries) {
             if (q != null && !q.isBlank()) {
-                rounds.add(retrieval.search(kbId, q.trim(), config, relax));
+                rounds.add(retrieval.search(context, kbId, q.trim(), config, relax));
             }
         }
         return rounds;

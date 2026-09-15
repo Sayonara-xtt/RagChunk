@@ -6,6 +6,7 @@ import com.xtsh.ragchunk.dto.chat.KbSearchParams;
 import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import com.xtsh.ragchunk.vector.ScoredChunk;
+import com.xtsh.ragchunk.service.chat.trace.ChatExecutionContext;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -54,9 +55,15 @@ public class KbSearchToolExecutor {
      */
     public List<ScoredChunk> execute(String kbId, String argumentsJson, KnowledgeBaseConfig config, QaConfig qa)
             throws Exception {
+        return execute(null, kbId, argumentsJson, config, qa);
+    }
+
+    public List<ScoredChunk> execute(
+            ChatExecutionContext context, String kbId, String argumentsJson,
+            KnowledgeBaseConfig config, QaConfig qa) throws Exception {
         KbSearchParams params = parseAndValidate(argumentsJson);
         log.info("[智能问答] 执行 tool {} queryLen={}, relax={}", TOOL_NAME, params.query().length(), params.relaxThreshold());
-        return retrieval.searchWithParams(kbId, params, config, qa);
+        return retrieval.searchWithParams(context, kbId, params, config, qa);
     }
 
     public String formatToolResult(List<ScoredChunk> hits) throws Exception {

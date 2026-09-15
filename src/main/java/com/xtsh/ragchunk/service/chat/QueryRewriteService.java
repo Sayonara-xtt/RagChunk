@@ -29,6 +29,10 @@ public class QueryRewriteService {
      * @return 检索短句列表；解析失败返回空列表（由编排层决定是否继续）
      */
     public List<String> rewriteToSearchQueries(String question, QaConfig qa) {
+        return rewriteToSearchQueries(question, qa, properties.getChat().getModel());
+    }
+
+    public List<String> rewriteToSearchQueries(String question, QaConfig qa, String chatModel) {
         if (!dashScope.isConfigured()) {
             log.warn("[智能问答] 跳过 Query 改写：LLM 未配置");
             return List.of();
@@ -36,7 +40,7 @@ public class QueryRewriteService {
         int maxQ = Math.min(qa.maxRewriteQueries(), 5);
         try {
             String raw = dashScope.chatJson(
-                    properties.getChat().getModel(),
+                    chatModel,
                     QueryRewritePromptBuilder.system(maxQ),
                     QueryRewritePromptBuilder.user(question));
             List<String> queries = parseSearchQueries(raw, maxQ);

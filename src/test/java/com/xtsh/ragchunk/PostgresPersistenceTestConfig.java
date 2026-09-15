@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 /** Isolates persistence tests from the application's pending Jackson 2/3 migration. */
 @TestConfiguration(proxyBeanMethods = false)
-class PostgresPersistenceTestConfig {
+public class PostgresPersistenceTestConfig {
 
     @Bean
     ObjectMapper jackson2ObjectMapper() {

@@ -11,6 +11,7 @@ import com.xtsh.ragchunk.dto.knowledge.KnowledgeBase;
 import com.xtsh.ragchunk.dto.knowledge.KnowledgeBaseConfig;
 import com.xtsh.ragchunk.dto.knowledge.QaConfig;
 import com.xtsh.ragchunk.vector.ScoredChunk;
+import com.xtsh.ragchunk.service.chat.trace.ChatExecutionContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class ChatOrchestrator {
      * @param schemeOverride 单次请求覆盖方案（可为 null，则用库配置）
      */
     public ChatResponse orchestrate(KnowledgeBase kb, String question, Integer schemeOverride) throws Exception {
+        return orchestrate(null, kb, question, schemeOverride);
+    }
+
+    public ChatResponse orchestrate(
+            ChatExecutionContext context, KnowledgeBase kb, String question, Integer schemeOverride) throws Exception {
         KnowledgeBaseConfig config = kb.getConfig();
         QaConfig qa = config.qa();
         QaScheme scheme = QaScheme.fromCode(schemeOverride, QaScheme.fromCode(qa.scheme(), QaScheme.PIPELINE));
@@ -50,26 +56,26 @@ public class ChatOrchestrator {
                 kb.getId(), scheme.code(), scheme.id(), question.length());
 
         return switch (scheme) {
-            case PIPELINE -> runPipeline(kb.getId(), question, config, qa, stats);
-            case COLLABORATIVE_PROGRESSIVE -> runCollaborativeProgressive(kb.getId(), question, config, qa, stats);
-            case COLLABORATIVE_ALWAYS -> runCollaborativeAlways(kb.getId(), question, config, qa, stats);
-            case AGENT -> runAgent(kb.getId(), question, config, qa, stats);
+            case PIPELINE -> runPipeline(context, kb.getId(), question, config, qa, stats);
+            case COLLABORATIVE_PROGRESSIVE -> runCollaborativeProgressive(context, kb.getId(), question, config, qa, stats);
+            case COLLABORATIVE_ALWAYS -> runCollaborativeAlways(context, kb.getId(), question, config, qa, stats);
+            case AGENT -> runAgent(context, kb.getId(), question, config, qa, stats);
         };
     }
 
     /** 方案 1：纯应用 — 原问检索 → 生成。 */
-    private ChatResponse runPipeline(String kbId, String question, KnowledgeBaseConfig config,
+    private ChatResponse runPipeline(ChatExecutionContext context, String kbId, String question, KnowledgeBaseConfig config,
                                    QaConfig qa, ChatRunStats stats) throws Exception {
-        List<ScoredChunk> hits = searchRound(kbId, question, config, stats, false);
-        return finish(kbId, question, config, qa, stats, hits);
+        List<ScoredChunk> hits = searchRound(context, kbId, question, config, stats, false);
+        return finish(context, kbId, question, config, qa, stats, hits);
     }
 
     /**
      * 方案 2：协作渐进 — 原问检索；不足时 LLM 改写 query 再检索（受 maxSearchRounds / maxLlmCalls 约束）。
      */
-    private ChatResponse runCollaborativeProgressive(String kbId, String question, KnowledgeBaseConfig config,
+    private ChatResponse runCollaborativeProgressive(ChatExecutionContext context, String kbId, String question, KnowledgeBaseConfig config,
                                                      QaConfig qa, ChatRunStats stats) throws Exception {
-        List<ScoredChunk> hits = searchRound(kbId, question, config, stats, false);
+        List<ScoredChunk> hits = searchRound(context, kbId, question, config, stats, false);
         double threshold = config.retrieval().scoreThreshold();
 
         if (!ChatRetrievalService.isSufficient(hits, threshold)
@@ -78,7 +84,7 @@ public class ChatOrchestrator {
                 && ChatRetrievalService.shouldRewrite(hits, qa)) {
 
             stats.setRewriteTriggered(true);
-            List<String> queries = rewriteRound(question, qa, stats);
+            List<String> queries = rewriteRound(context, question, qa, stats);
             if (!queries.isEmpty()) {
                 List<List<ScoredChunk>> rounds = new ArrayList<>();
                 rounds.add(hits);
@@ -86,43 +92,44 @@ public class ChatOrchestrator {
                     if (stats.getSearchRounds() >= qa.maxSearchRounds()) {
                         break;
                     }
-                    rounds.add(retrieval.search(kbId, q, config, false));
+                    rounds.add(retrieval.search(context, kbId, q, config, false));
                     stats.incrementSearchRounds();
                 }
                 hits = retrieval.mergeHits(rounds, config.retrieval().topK());
             }
         }
-        return finish(kbId, question, config, qa, stats, hits);
+        return finish(context, kbId, question, config, qa, stats, hits);
     }
 
     /** 方案 3：协作全量 — 每条先 LLM 改写再检索（仍受次数上限约束）。 */
-    private ChatResponse runCollaborativeAlways(String kbId, String question, KnowledgeBaseConfig config,
+    private ChatResponse runCollaborativeAlways(ChatExecutionContext context, String kbId, String question, KnowledgeBaseConfig config,
                                                 QaConfig qa, ChatRunStats stats) throws Exception {
         stats.setRewriteTriggered(true);
-        List<String> queries = rewriteRound(question, qa, stats);
+        List<String> queries = rewriteRound(context, question, qa, stats);
         List<ScoredChunk> hits;
         if (queries.isEmpty()) {
-            hits = searchRound(kbId, question, config, stats, false);
+            hits = searchRound(context, kbId, question, config, stats, false);
         } else {
-            List<List<ScoredChunk>> rounds = ChatRetrievalService.roundsFromQueries(kbId, queries, config, retrieval, false);
+            List<List<ScoredChunk>> rounds = ChatRetrievalService.roundsFromQueries(
+                    context, kbId, queries, config, retrieval, false);
             stats.setSearchRounds(rounds.size());
             hits = retrieval.mergeHits(rounds, config.retrieval().topK());
             log.info("[智能问答] 全量改写检索 合并命中={}, maxScore={}", hits.size(), ChatRetrievalService.maxScore(hits));
         }
-        return finish(kbId, question, config, qa, stats, hits);
+        return finish(context, kbId, question, config, qa, stats, hits);
     }
 
     /**
      * 方案 5：Agent — LLM 通过 search_kb 工具检索（轮次 ≤ agentMaxIterations，tool 次数受控）。
      */
-    private ChatResponse runAgent(String kbId, String question, KnowledgeBaseConfig config,
+    private ChatResponse runAgent(ChatExecutionContext context, String kbId, String question, KnowledgeBaseConfig config,
                                   QaConfig qa, ChatRunStats stats) throws Exception {
         if (!dashScope.isConfigured()) {
             log.warn("[智能问答] Agent 方案需要 LLM，回退为纯应用检索");
-            return runPipeline(kbId, question, config, qa, stats);
+            return runPipeline(context, kbId, question, config, qa, stats);
         }
 
-        String model = properties.getChat().getModel();
+        String model = chatModel(context);
         List<Map<String, Object>> messages = new ArrayList<>();
         messages.add(Map.of("role", "system", "content", agentSystemPrompt(qa)));
         messages.add(Map.of("role", "user", "content", question));
@@ -156,7 +163,7 @@ public class ChatOrchestrator {
                         continue;
                     }
                     try {
-                        List<ScoredChunk> toolHits = toolExecutor.execute(kbId, tc.argumentsJson(), config, qa);
+                        List<ScoredChunk> toolHits = toolExecutor.execute(context, kbId, tc.argumentsJson(), config, qa);
                         stats.incrementSearchRounds();
                         toolCallsThisRun++;
                         accumulated = retrieval.mergeHits(List.of(accumulated, toolHits), config.retrieval().topK());
@@ -186,32 +193,33 @@ public class ChatOrchestrator {
         }
         if (!accumulated.isEmpty() && stats.getLlmCalls() < qa.maxLlmCalls()) {
             stats.incrementLlmCalls();
-            String answer = answerGeneration.generate(question, accumulated);
+            String answer = answerGeneration.generate(question, accumulated, model);
             return buildResponse(answer, accumulated, stats);
         }
         if (!accumulated.isEmpty()) {
             return buildResponse(
-                    answerGeneration.generate(question, accumulated), accumulated, stats);
+                    answerGeneration.generate(question, accumulated, model), accumulated, stats);
         }
         return noHitResponse(stats);
     }
 
-    private List<ScoredChunk> searchRound(String kbId, String query, KnowledgeBaseConfig config,
+    private List<ScoredChunk> searchRound(ChatExecutionContext context, String kbId, String query, KnowledgeBaseConfig config,
                                           ChatRunStats stats, boolean relax) throws Exception {
-        List<ScoredChunk> hits = retrieval.search(kbId, query, config, relax);
+        List<ScoredChunk> hits = retrieval.search(context, kbId, query, config, relax);
         stats.incrementSearchRounds();
         return hits;
     }
 
-    private List<String> rewriteRound(String question, QaConfig qa, ChatRunStats stats) {
-        List<String> queries = queryRewrite.rewriteToSearchQueries(question, qa);
+    private List<String> rewriteRound(
+            ChatExecutionContext context, String question, QaConfig qa, ChatRunStats stats) {
+        List<String> queries = queryRewrite.rewriteToSearchQueries(question, qa, chatModel(context));
         if (!queries.isEmpty()) {
             stats.incrementLlmCalls();
         }
         return queries;
     }
 
-    private ChatResponse finish(String kbId, String question, KnowledgeBaseConfig config, QaConfig qa,
+    private ChatResponse finish(ChatExecutionContext context, String kbId, String question, KnowledgeBaseConfig config, QaConfig qa,
                                 ChatRunStats stats, List<ScoredChunk> hits) throws Exception {
         if (hits.isEmpty()) {
             return noHitResponse(stats);
@@ -219,9 +227,9 @@ public class ChatOrchestrator {
         String answer;
         if (dashScope.isConfigured() && stats.getLlmCalls() < qa.maxLlmCalls()) {
             stats.incrementLlmCalls();
-            answer = answerGeneration.generate(question, hits);
+            answer = answerGeneration.generate(question, hits, chatModel(context));
         } else {
-            answer = answerGeneration.generate(question, hits);
+            answer = answerGeneration.generate(question, hits, chatModel(context));
         }
         return buildResponse(answer, hits, stats);
     }
@@ -247,6 +255,12 @@ public class ChatOrchestrator {
         resp.setCitations(AnswerGenerationService.toCitations(hits));
         resp.setMeta(ChatResponse.Meta.from(stats));
         return resp;
+    }
+
+    private String chatModel(ChatExecutionContext context) {
+        return context == null || context.options() == null
+                ? properties.getChat().getModel()
+                : context.options().chatModel();
     }
 
     private static String agentSystemPrompt(QaConfig qa) {

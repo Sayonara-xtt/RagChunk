@@ -20,6 +20,7 @@ public class RagChunkProperties {
     private Retrieval retrieval = new Retrieval();
     private Chat chat = new Chat();
     private Qa qa = new Qa();
+    private Evaluation evaluation = new Evaluation();
     private Upload upload = new Upload();
     private Oss oss = new Oss();
 
@@ -115,6 +116,18 @@ public class RagChunkProperties {
         private int agentMaxToolCallsPerRound = 1;
         private boolean agentAllowRelaxThreshold = true;
 
+    }
+
+    @Data
+    public static class Evaluation {
+        private int corePoolSize = 1;
+        private int maxPoolSize = 2;
+        private int queueCapacity = 100;
+        private int maxCasesPerRun = 500;
+        private int shutdownWaitSeconds = 30;
+        private boolean judgeEnabled = true;
+        private String judgeModel = "";
+        private String judgePromptVersion = "eval-judge-v1";
     }
 
     /** 异步上传线程池 */

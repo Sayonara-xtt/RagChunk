@@ -26,6 +26,13 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse("NOT_FOUND", ex.getMessage()));
     }
 
+    @ApiResponse(responseCode = "409", description = "资源版本冲突",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ApiErrorResponse> conflict(ConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiErrorResponse("CONFLICT", ex.getMessage()));
+    }
+
     @ApiResponse(responseCode = "500", description = "服务内部错误",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     @ExceptionHandler(Exception.class)

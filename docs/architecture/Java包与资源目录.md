@@ -2,6 +2,8 @@
 
 > 公用分层约定。与 `.cursor/rules/java-architecture.mdc` 一致；以本仓当前代码树为准。
 
+Java/Spring 主系统是权限、任务、配置、版本、事务和持久化的唯一事实源。后续 Python 能力服务只能是可选、可替换且可降级的算法能力面；禁用 Python 时纯 Java 主链仍须运行，Python 返回结果必须经 Java 校验后才能进入事实数据。
+
 ## 分层依赖
 
 ```text
@@ -23,6 +25,7 @@ src/main/java/com/xtsh/ragchunk/
 ├── RagChunkApplication.java          # 启动类
 ├── controller/                       # REST 入口（按业务域分子包）
 │   ├── chat/
+│   ├── evaluation/
 │   ├── chunk/
 │   ├── document/
 │   ├── knowledge/
@@ -30,6 +33,7 @@ src/main/java/com/xtsh/ragchunk/
 │   └── RuntimeConfigController.java
 ├── service/                          # 业务编排与事务（按域分子包）
 │   ├── chat/
+│   │   └── trace/                    # ChatRun、检索轮次与命中证据
 │   ├── chunk/                        # 含 *Store 接口与实现
 │   ├── document/
 │   └── knowledge/
@@ -51,6 +55,7 @@ src/main/java/com/xtsh/ragchunk/
 ├── exception/                        # 业务异常 + @RestControllerAdvice
 ├── util/                             # 无状态工具
 ├── ingest/                           # 解析、切片、入库流水线（可选域包）
+├── evaluation/                       # 评测集、冻结运行、指标与比较
 ├── embedding/                        # 向量化抽象与实现
 ├── vector/                           # 向量库抽象与实现
 ├── objectstorage/                    # 对象存储（本地/OSS）
@@ -81,6 +86,9 @@ src/main/java/com/xtsh/ragchunk/
 | 文档上传 | `controller.document` | `service.document` | `dto/vo.document` |
 | 切片查询 | `controller.chunk` | `service.chunk` | `dto/vo.chunk` |
 | 智能问答 | `controller.chat` | `service.chat` | `dto/vo.chat` |
+| 质量评测 | `controller.evaluation` | `evaluation.dataset/run/metric/comparison` | 领域 record 形成只读管理契约 |
+
+评测域暂保持在顶层 `evaluation/`，用于隔离数据集、异步运行、指标和比较；问答证据属于现有问答服务，放在 `service/chat/trace/`。未来 Python 适配器只能放在 `integration/` 边界，不能持有数据库 Mapper 或成为 Controller 的直接依赖。
 
 新增业务域时：同步增加 `controller/<域>`、`service/<域>`、`dto/<域>`、`vo/<域>`；表实体进 `entity/`，Mapper 进 `mapper/`（扁平）。
 
@@ -102,11 +110,13 @@ src/main/resources/
 │   ├── migration/                    # 默认 Flyway 脚本（只增不改已发布）
 │   │   ├── V1__init_schema.sql
 │   │   ├── V2__table_comments.sql
-│   │   └── V3__async_upload_oss.sql
+│   │   ├── V3__async_upload_oss.sql
+│   │   └── V4__chat_trace_and_evaluation.sql
 │   └── migration-local/              # local profile 专用迁移
 │       ├── V1__init_schema.sql
 │       ├── V2__table_comments.sql
-│       └── V3__async_upload_oss.sql
+│       ├── V3__async_upload_oss.sql
+│       └── V4__chat_trace_and_evaluation.sql
 ├── static/                           # 静态资源（按需）
 └── META-INF/
 ```

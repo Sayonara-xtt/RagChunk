@@ -4,11 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80dcd328-b573-402e-b4e4-11738807fae8" name="更改" comment="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发">
-      <change beforePath="$PROJECT_DIR$/docs/archive/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/archive/architecture.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/archive/chunking.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/archive/database.md" beforeDir="false" />
+    <list default="true" id="80dcd328-b573-402e-b4e4-11738807fae8" name="更改" comment="优化方向 结合 RAGFlow 和 Dify 优势">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGENTS.md" beforeDir="false" afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/architecture/Java包与资源目录.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/architecture/Java包与资源目录.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/architecture/生产级演化方案.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/architecture/生产级演化方案.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/tdd/TDD工作流.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/tdd/TDD工作流.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/tdd/工作项模板.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/tdd/工作项模板.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/versions/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/versions/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/versions/V0.9/01-需求单.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/versions/V0.9/01-需求单.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/versions/_template/02-详细设计.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/versions/_template/02-详细设计.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/config/RagChunkProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/config/RagChunkProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/controller/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/controller/chat/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/exception/ApiExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/exception/ApiExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/AnswerGenerationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/AnswerGenerationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/ChatOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/ChatOrchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/ChatRetrievalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/ChatRetrievalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/KbSearchToolExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/KbSearchToolExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/QueryRewriteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/QueryRewriteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/RagChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/service/chat/RagChatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/vo/chat/ChatResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xtsh/ragchunk/vo/chat/ChatResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/xtsh/ragchunk/PostgresPersistenceTestConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/xtsh/ragchunk/PostgresPersistenceTestConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +34,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="219" />
+    <option name="cachedIndexableFilesCount" value="355" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -41,10 +59,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/resources/application.yaml" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -58,23 +76,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0009175026848338" />
-      <entry key="MS500" value="1.249125228094035" />
-      <entry key="S2" value="1.9448345519111743" />
-      <entry key="S5" value="2.813692006161264" />
-      <entry key="S10" value="4.038242644924583" />
-      <entry key="S30" value="6.960962213547828" />
-      <entry key="S60" value="8.585878298658656" />
-      <entry key="M2" value="9.670447944435477" />
-      <entry key="M5" value="10.43500066817049" />
-      <entry key="M10" value="10.711618751727451" />
-      <entry key="M15" value="10.806411310107755" />
-      <entry key="M30" value="10.902531377580607" />
-      <entry key="H1" value="10.952101930007368" />
-      <entry key="H2" value="11.365746641271267" />
-      <entry key="H4" value="18.863947512804316" />
-      <entry key="D1" value="121.05775531924488" />
-      <entry key="W1" value="191.9172403239087" />
+      <entry key="MS100" value="1.0000000000000004" />
+      <entry key="MS500" value="1.000872838687411" />
+      <entry key="S2" value="1.178222580313726" />
+      <entry key="S5" value="1.6314743698206189" />
+      <entry key="S10" value="2.2035794366011165" />
+      <entry key="S30" value="3.8921815912685402" />
+      <entry key="S60" value="5.056481412713872" />
+      <entry key="M2" value="5.901892493110035" />
+      <entry key="M5" value="6.525698708172217" />
+      <entry key="M10" value="6.756558802068836" />
+      <entry key="M15" value="6.836272940098928" />
+      <entry key="M30" value="6.918965942707168" />
+      <entry key="H1" value="7.089327258637225" />
+      <entry key="H2" value="8.221328944732726" />
+      <entry key="H4" value="13.225713525563082" />
+      <entry key="D1" value="107.66196726942599" />
+      <entry key="W1" value="193.9251510715824" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -96,23 +114,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9403967971348918" />
-      <entry key="MS500" value="1.2343202552566792" />
-      <entry key="S2" value="1.9394284270644453" />
-      <entry key="S5" value="2.8106643605201778" />
-      <entry key="S10" value="4.036085937493866" />
-      <entry key="S30" value="6.959708190749898" />
-      <entry key="S60" value="8.585099857745588" />
-      <entry key="M2" value="9.670007915498942" />
-      <entry key="M5" value="10.434810290174878" />
-      <entry key="M10" value="10.711520960307597" />
-      <entry key="M15" value="10.80634552102236" />
-      <entry key="M30" value="10.902498181402564" />
-      <entry key="H1" value="10.952085253704217" />
-      <entry key="H2" value="11.365737899437635" />
-      <entry key="H4" value="18.863939377897367" />
-      <entry key="D1" value="121.05774385732222" />
-      <entry key="W1" value="191.9172375227388" />
+      <entry key="MS100" value="0.9395227492140122" />
+      <entry key="MS500" value="0.9884652710200159" />
+      <entry key="S2" value="1.1746786230079203" />
+      <entry key="S5" value="1.6296336745405202" />
+      <entry key="S10" value="2.202399572863822" />
+      <entry key="S30" value="3.8915206973790673" />
+      <entry key="S60" value="5.056055218997813" />
+      <entry key="M2" value="5.901644142800618" />
+      <entry key="M5" value="6.52558888328829" />
+      <entry key="M10" value="6.756501942136612" />
+      <entry key="M15" value="6.836234584603119" />
+      <entry key="M30" value="6.918946531632055" />
+      <entry key="H1" value="7.089317298355917" />
+      <entry key="H2" value="8.22132309423495" />
+      <entry key="H4" value="13.225708385064786" />
+      <entry key="D1" value="107.66195732939417" />
+      <entry key="W1" value="193.92514828482425" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -126,37 +144,37 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.RagChunk [clean].executor": "Run",
-    "Maven.RagChunk [compile].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "发现新的/更新的数据库配置",
-    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.RagChunkApplication.executor": "Debug",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "dev-zh",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "项目",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2321839",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.RagChunk [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.RagChunk [compile].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;发现新的/更新的数据库配置&quot;,
+    &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.RagChunkApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev-zh&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2321839&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
@@ -213,7 +231,8 @@
       <workItem from="1786589458535" duration="97000" />
       <workItem from="1787808736247" duration="206000" />
       <workItem from="1787808961392" duration="5157000" />
-      <workItem from="1787821949700" duration="15415000" />
+      <workItem from="1787821949700" duration="22380000" />
+      <workItem from="1788769188312" duration="3754000" />
     </task>
     <task id="LOCAL-00001" summary="RAG知识库服务项目初始化">
       <option name="closed" value="true" />
@@ -271,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787882294563</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="优化方向 结合 RAGFlow 和 Dify 优势">
+      <option name="closed" value="true" />
+      <created>1787905308473</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1787905308473</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +354,8 @@
     <MESSAGE value="1 更新项目全局规则 2 推送之前未维护的文件" />
     <MESSAGE value="1 新增TDD workflows 测试驱动流程 2 整理项目框架" />
     <MESSAGE value="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化版本流程 新增需求草案/设计/测试用例——&gt;再开发" />
+    <MESSAGE value="优化方向 结合 RAGFlow 和 Dify 优势" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化方向 结合 RAGFlow 和 Dify 优势" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

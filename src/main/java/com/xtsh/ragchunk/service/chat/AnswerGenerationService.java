@@ -31,6 +31,11 @@ public class AnswerGenerationService {
      * @return answer 文本；调用方负责 llmCalls 计数
      */
     public String generate(String originalQuestion, List<ScoredChunk> hits) throws Exception {
+        return generate(originalQuestion, hits, properties.getChat().getModel());
+    }
+
+    public String generate(
+            String originalQuestion, List<ScoredChunk> hits, String chatModel) throws Exception {
         String context = hits.stream()
                 .map(h -> "---\n" + h.record().text())
                 .collect(Collectors.joining("\n"));
@@ -41,7 +46,7 @@ public class AnswerGenerationService {
         }
         String system = "你是企业知识库助手。仅根据下列「参考资料」回答问题；资料不足时请明确说明，不要编造。";
         String user = "参考资料：\n" + context + "\n\n用户问题：" + originalQuestion;
-        String answer = dashScope.chat(properties.getChat().getModel(), system, user);
+        String answer = dashScope.chat(chatModel, system, user);
         log.info("[智能问答] 答案生成完成 contextChunks={}, answerLen={}", hits.size(), answer.length());
         return answer;
     }

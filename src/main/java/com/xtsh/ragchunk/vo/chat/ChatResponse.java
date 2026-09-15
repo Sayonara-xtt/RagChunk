@@ -11,6 +11,9 @@ import java.util.List;
 
 public class ChatResponse {
 
+    @Schema(description = "问答运行唯一标识", example = "cr_0123456789abcdef0123456789abcdef")
+    private String runId;
+
     @Schema(description = "模型生成的回答；无 API Key 时为检索片段拼接说明")
     private String answer;
 

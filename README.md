@@ -2,16 +2,18 @@
 
 基于 **Spring Boot 4** 的 RAG 知识库服务：创建库 → 上传文档 → **混合切片**（规则 + 千问/Ollama 按需）→ 向量入库 → 检索问答。
 
-> **⚠️ 状态说明**：核心功能 **已实现** 且 **接口曾联调通过**；解析/切片/AI/问答的 **业务正确性尚未验收**，仅供开发联调。详见 [docs/project/开发进度.md](docs/project/开发进度.md)。
+> **当前状态**：V0.9 问答追踪与质量评测主体已实现；Judge 历史快照修订正在等待门禁 B 重新审核。产品路线为“能力对标 RAGFlow、Java/Spring 主系统、Dify 作为集成对象、保留可控混合切片差异化”。详见 [生产级演化方案](docs/architecture/生产级演化方案.md) 与 [V0.9 版本总览](docs/versions/V0.9/README.md)。
 
 | 项 | 说明 |
 |----|------|
 | 技术栈 | Java 17、Spring Boot 4.0.6、MyBatis Plus、PostgreSQL + pgvector、Flyway |
 | 已实现能力 | 离线建库、混合切片 T0/T1/T2/T4/T8、pgvector 检索、**智能问答四种编排** |
-| **交付状态** | **开发完成 · 测试不充分 · 正确性未保证** |
+| **交付状态** | **V0.9 主体已实现 · 修订门禁待审核** |
 | 支持格式 | `txt` / `md` / `docx` / `xlsx` / `xls`（**PDF 未实现**） |
 | **文档索引** | [docs/README.md](docs/README.md) |
 | **开发进度** | [docs/project/开发进度.md](docs/project/开发进度.md) |
+| **规范性路线** | [docs/architecture/生产级演化方案.md](docs/architecture/生产级演化方案.md) |
+| **V0.9 文档** | [docs/versions/V0.9/README.md](docs/versions/V0.9/README.md) |
 | **创建库参数** | [docs/api/创建知识库接口参数.md](docs/api/创建知识库接口参数.md) |
 | **智能问答** | [docs/features/智能问答方案.md](docs/features/智能问答方案.md) |
 | **异步上传** | [docs/features/异步上传与OSS.md](docs/features/异步上传与OSS.md) |
@@ -56,6 +58,10 @@ POST 创建知识库 → POST 上传文档 → GET 切片 / POST 问答
 | 切片列表 | `GET` | `/api/v1/knowledge-bases/{kbId}/chunks` | `docId` 可选；空则返回该库全部切片 |
 | 单文档切片 | `GET` | `/api/v1/knowledge-bases/{kbId}/documents/{docId}/chunks` | |
 | 问答 | `POST` | `/api/v1/knowledge-bases/{kbId}/chat` | `question`；可选 `qaScheme`；响应含 `meta.schemeName` |
+| 问答运行 | `GET` | `/api/v1/knowledge-bases/{kbId}/chat-runs` | 分页查询运行；按 `/{runId}` 查询详情 |
+| 评测集 | `POST/GET/PUT` | `/api/v1/knowledge-bases/{kbId}/evaluation-sets` | 管理带版本的评测集与用例，不提供删除 |
+| 评测运行 | `POST/GET` | `/api/v1/knowledge-bases/{kbId}/evaluation-runs` | 异步执行评测、查询冻结结果和聚合指标 |
+| 运行比较 | `GET` | `/api/v1/knowledge-bases/{kbId}/evaluation-comparisons` | 比较两次冻结评测运行 |
 
 **Swagger UI**（启动后）：
 
